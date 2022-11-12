@@ -1,10 +1,10 @@
 const schedule = require('node-schedule');
 const moment = require('moment');
-const { createStatusWeb } = require('../controllers/StatusWeb');
+const { registerPing } = require('../controllers/Ping');
 const { requestStatus } = require('./TestWeb');
 
 
-const pingToUrl = (url, port, printResultShell = false) => {
+const pingToUrl = ({ name, url, port, expectedCode, printResultShell = false }) => {
   schedule.scheduleJob('*/2 * * * * *', async () => {
     let date = moment()
 
@@ -12,16 +12,13 @@ const pingToUrl = (url, port, printResultShell = false) => {
     console.log(statusCode)
     const resultWeb = {
       webBaseUrl: url,
-      expectResponseCode: null,
-      resultTest: {
-        timeString: date.format('h:mm:ss'),
-        dateString: date.format('YYYY-MM-DD'),
-        responseTimeMillis: moment() - date,
-        responseCode: statusCode
-      }
+      timeString: date.format('h:mm:ss'),
+      dateString: date.format('YYYY-MM-DD'),
+      responseTimeMillis: moment() - date,
+      responseCode: statusCode
     }
 
-    let res = await createStatusWeb(resultWeb)
+    let res = await registerPing(resultWeb)
 
     if (printResultShell)
       console.log({ ...res, ...resultWeb })
