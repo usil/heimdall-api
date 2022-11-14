@@ -1,4 +1,4 @@
-cron_expression: "*/2 * * * *"
+cron_expression: "*/2 * * * * *"
 
 url_webs:
   - url: "https://aj-derteano.github.io/"

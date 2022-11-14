@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { getWebs, getResultWeb } = require("../controllers/Webs");
+const { getWebs, getResultWeb, getResultsWeb } = require("../controllers/Webs");
 
 /**
  * Listar resultados
@@ -12,11 +12,11 @@ router.get("/target", getWebs)
  * Ver los resultados de un dia
  * recibe por query la web y el date en formato YYYY:MM:DD
  */
-router.get("/target/test", getResultWeb)
+router.get("/target/result-sumary/web", getResultWeb)
 
 /**
- * Crear estatus
+ * Ver status de todas las webs
  */
-// router.post("/target/result/result-summary/:url", createStatusWeb)
+router.get("/target/result-sumary/webs", getResultsWeb)
 
 module.exports = router;

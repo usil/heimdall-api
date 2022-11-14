@@ -5,10 +5,11 @@ var bodyParser = require('body-parser');
 var cors = require('cors');
 const yaml = require('js-yaml');
 const fs = require('fs')
+const moment = require('moment')
 // process.env.TZ
 
 const dbConnectMongo = require('./config/mongo');
-const { pingToUrl } = require('./utils/ScheduleJods');
+const { pingToUrl } = require('./utils/SchedulesJod');
 const port = process.env.PORT;
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -41,9 +42,9 @@ let data = yaml.load(fileContent);
 /* for (const web of data.url_webs) {
   const { url, expected_code, name } = web;
   pingToUrl({ name, url, expected_code })
-}
+} */
 
-const Webs = require('./controllers/Webs')
+/* const Webs = require('./controllers/Webs')
 for (const web of data.url_webs) {
   const { url, expected_code, name, description} = web;
   let dataWeb = {
