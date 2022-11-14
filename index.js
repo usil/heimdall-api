@@ -34,23 +34,29 @@ dbConnectMongo();
 /**
  * read yaml
  */
-let fileContent = fs.readFileSync('./config.yaml', 'utf8')
-let data = yaml.load(fileContent);
+let fileContent = fs.readFileSync('./config.yml', 'utf8')
+let config = yaml.load(fileContent);
 
-for (const web of data.url_webs) {
+for (const web of config.url_webs) {
   const { url, expected_code, name } = web;
-  pingToUrl({ name, url, expected_code })
+  pingToUrl({
+    name,
+    url,
+    expected_code,
+    cronExpression: config.cron_expression,
+    printResultShell: true
+  })
 }
 
 const Webs = require('./controllers/Webs')
-for (const web of data.url_webs) {
-  const { url, expected_code, name, description} = web;
+for (const web of config.url_webs) {
+  const { url, expected_code, name, description } = web;
   let dataWeb = {
     webBaseUrl: url,
     name,
     description,
     expectResponseCode: expected_code
   }
-  
+
   Webs.createWeb(dataWeb)
 }
