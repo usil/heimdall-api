@@ -39,12 +39,12 @@ dbConnectMongo();
 let fileContent = fs.readFileSync('./config.yaml', 'utf8')
 let data = yaml.load(fileContent);
 
-/* for (const web of data.url_webs) {
+for (const web of data.url_webs) {
   const { url, expected_code, name } = web;
   pingToUrl({ name, url, expected_code })
-} */
+}
 
-/* const Webs = require('./controllers/Webs')
+const Webs = require('./controllers/Webs')
 for (const web of data.url_webs) {
   const { url, expected_code, name, description} = web;
   let dataWeb = {
@@ -55,4 +55,4 @@ for (const web of data.url_webs) {
   }
   
   Webs.createWeb(dataWeb)
-} */
+}

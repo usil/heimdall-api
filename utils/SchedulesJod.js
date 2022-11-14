@@ -5,8 +5,10 @@ const { requestStatus } = require('./TestWeb');
 
 const cronExpresion = process.env.cron_expression
 
+const getRandomIntMax = (min, max) => Math.floor(Math.random() * (max - min) + min);
 
 const pingToUrl = async ({ name, url, port, expectedCode, printResultShell = false }) => {
+  // Datos de prueba
   /* for (let index = 0; index <= 90; index++) {
 
     let date = moment().subtract(index, 'd')
@@ -32,7 +34,7 @@ const pingToUrl = async ({ name, url, port, expectedCode, printResultShell = fal
       timeString: date.format('h:mm:ss'),
       dateString: date.format('YYYY-MM-DD'),
       responseTimeMillis: moment() - date,
-      responseCode: statusCode
+      responseCode: getRandomIntMax(0, 10) > 0 ? statusCode : 500
     }
 
     let res = await registerPing(resultWeb)
