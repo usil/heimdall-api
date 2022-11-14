@@ -118,12 +118,12 @@ const getResultsWeb = async (req, res) => {
             statusDetail.incidentsCount++;
           }
         }
-        statusDetail.averageResponseTimeMillis = statusDetail.averageResponseTimeMillis / count_status_ok;
+        statusDetail.averageResponseTimeMillis = Math.floor((statusDetail.averageResponseTimeMillis / count_status_ok))
 
 
         statusWeb.statusDetail.unshift({ ...{}, ...statusDetail })
 
-        if (today === statusDetail.dateString && statusDetail.incidentsCount === 0) {
+        if (today === statusDetail.dateString) {
           statusWeb.globalStatus = 'Operational'
         }
       }

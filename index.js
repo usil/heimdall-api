@@ -10,7 +10,7 @@ const moment = require('moment')
 
 const dbConnectMongo = require('./config/mongo');
 const { pingToUrl } = require('./utils/SchedulesJod');
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -22,7 +22,7 @@ app.use('/', require('./routes'))
 
 
 app.listen(port, () => {
-  console.log(`Exposed port http://127.0.0.1:${port}`)
+  // console.log(`Exposed port http://127.0.0.1:${port}`)
 });
 
 dbConnectMongo();
@@ -39,10 +39,10 @@ dbConnectMongo();
 let fileContent = fs.readFileSync('./config.yaml', 'utf8')
 let data = yaml.load(fileContent);
 
-for (const web of data.url_webs) {
+/* for (const web of data.url_webs) {
   const { url, expected_code, name } = web;
   pingToUrl({ name, url, expected_code })
-}
+} */
 
 const Webs = require('./controllers/Webs')
 for (const web of data.url_webs) {

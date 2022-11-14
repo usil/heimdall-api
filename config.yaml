@@ -8,8 +8,8 @@ url_webs:
   - url: "test.com"
     name: "test"
     description: "Web de prueba"
-    expected_code: 404
+    expected_code: 500
   - url: "https://gist.githubusercontent.com/jrichardsz/0eb489ad7955e097a08b06ecb69f29bc/raw/ee9563c0aa4105d67cf67219c6271e8aeaaa437d/markdown%2520release%2520notes%2520template.md"
     name: "Test 2"
     description: "Web de prueba"
-    expected_code: 202
+    expected_code: 200
