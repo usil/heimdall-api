@@ -26,18 +26,12 @@ app.listen(port, () => {
 dbConnectMongo();
 
 /**
- * Ping to web for test
- */
-// pingToUrl('https://aj-derteano.github/')
-// pingToUrl('https://aj-derteano.github.io/', null, true)
-
-/**
- * read yaml
+ * Read yml
  */
 let fileContent = fs.readFileSync('./config.yml', 'utf8')
 let config = yaml.load(fileContent);
 
-/* for (const web of config.url_webs) {
+for (const web of config.url_webs) {
   const { url, expected_code, name } = web;
   pingToUrl({
     name,
@@ -46,9 +40,9 @@ let config = yaml.load(fileContent);
     cronExpression: config.cron_expression,
     printResultShell: true
   })
-} */
+}
 
-/* const Webs = require('./controllers/Webs')
+const Webs = require('./controllers/Webs')
 for (const web of config.url_webs) {
   const { url, expected_code, name, description } = web;
   let dataWeb = {
@@ -59,4 +53,4 @@ for (const web of config.url_webs) {
   }
 
   Webs.createWeb(dataWeb)
-} */
+}

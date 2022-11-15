@@ -1,5 +1,5 @@
-const Web = require('../models/Webs')
-const Ping = require('./Ping')
+const Web = require('../models/Webs');
+const Ping = require('./Ping');
 const moment = require('moment');
 
 /**
@@ -11,7 +11,7 @@ const createWeb = async (dataWeb) => {
     let response = await Web.create(body);
     return response;
   } catch (err) {
-    return "WEB:ERROR_CREATE_WEB"
+    return `[WEB:ERROR_CREATE_WEB] ${err}`
   }
 }
 
@@ -23,7 +23,7 @@ const getWebs = async (req, res) => {
     const data = await Web.find({});
     res.send({ data })
   } catch (err) {
-    res.send(err)
+    res.send(`[WEB:GET_WEBS] ${err}`)
   }
 }
 
@@ -75,7 +75,7 @@ const getResultWeb = async (req, res) => {
     }
     res.send([statusWeb])
   } catch (err) {
-    return "WEB:ERROR_GET_RESULT_WEB"
+    res.send(`[WEB:ERROR_GET_RESULT_WEB] ${err}`)
   }
 }
 
@@ -85,7 +85,7 @@ const getResultWeb = async (req, res) => {
 const getResultsWeb = async (req, res) => {
   try {
     let { sinceDay } = await req.query;
-    const webs = await Web.find({})
+    const webs = await Web.find({});
     let resultsWeb = [];
 
     for (const web of webs) {
@@ -133,7 +133,7 @@ const getResultsWeb = async (req, res) => {
 
     res.send(resultsWeb)
   } catch (err) {
-    return "WEB:ERROR_GET_RESULT_WEB"
+    res.send(`[WEB:ERROR_GET_RESULT_WEB] ${err}`)
   }
 }
 

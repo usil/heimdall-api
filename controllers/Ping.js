@@ -1,4 +1,4 @@
-const Ping = require('../models/Ping')
+const Ping = require('../models/Ping');
 const moment = require('moment');
 
 /**
@@ -11,7 +11,7 @@ const getResultWebs = async (web, sinceDay) => {
     const webResults = await Ping.find({
       webBaseUrl: web,
       dateString: {
-        $gte: since_day.format('YYYY-MM-DD')
+        $gt: since_day.format('YYYY-MM-DD')
       }
     })
       .sort({
@@ -23,10 +23,10 @@ const getResultWebs = async (web, sinceDay) => {
     let dataAdapter = [];
     let dateString = null;
     let countResult = 0;
-    
+
     for (const webResult of webResults) {
       countResult++;
-      
+
       if (dateString !== webResult.dateString || webResults.length === countResult) {
 
         if (dataAdapter.length > 0 && webResults.length !== countResult) {
@@ -59,7 +59,7 @@ const registerPing = async (webDataPing) => {
     let response = await Ping.create(body);
     return response;
   } catch (err) {
-    return "PING_WEB:ERROR_REGISTER_PING"
+    return `[PING:ERROR_REGISTER_PING] ${err}`;
   }
 }
 
