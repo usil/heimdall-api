@@ -1,9 +1,11 @@
 const mongoose = require("mongoose");
 
+const DB_URI = process.env.DB_URI;
+const DB_NAME = process.env.DB_NAME;
+
 const dbConnect = () => {
-  const DB_URI = process.env.DB_URI;
   mongoose.connect(DB_URI, {
-    dbName: 'heimdall-api',
+    dbName: DB_NAME,
     useNewUrlParser: true,
     useUnifiedTopology: true
   },
