@@ -46,7 +46,7 @@ const getResultWebs = async (web, sinceDay) => {
 
     return resultAdapter
   } catch (err) {
-    return `[WEB:ERROR_GET_RESULT_WEBS] ${err}`;
+    console.log(`[WEB:ERROR_GET_RESULT_WEBS] ${err}`)
   }
 }
 
@@ -59,7 +59,7 @@ const registerPing = async (webDataPing) => {
     let response = await Ping.create(body);
     return response;
   } catch (err) {
-    return `[PING:ERROR_REGISTER_PING] ${err}`;
+    console.log(`[PING:ERROR_REGISTER_PING] ${err}`)
   }
 }
 

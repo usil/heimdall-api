@@ -8,7 +8,7 @@ const fs = require('fs')
 
 const dbConnectMongo = require('./config/mongo');
 const { pingToUrl } = require('./utils/SchedulesJod');
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -51,6 +51,5 @@ for (const web of config.url_webs) {
     description,
     expectResponseCode: expected_code
   }
-
   Webs.createWeb(dataWeb)
 }

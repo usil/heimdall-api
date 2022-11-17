@@ -1,20 +1,23 @@
 version: "3.7"
 
 services:
-  heimdall_api:
-    container_name: heimdall-api
-    restart: always
-    build: .
-    ports:
-      - "8081:8081"
-    links:
-      - mongo
-    volumes:
-      - .:/usr/src/app
-  mongo:
-    container_name: database
+  mongodb:
+    container_name: mongodb
     image: mongo
     ports:
       - "27018:27017"
     logging:
       driver: none
+  heimdall_api:
+    container_name: heimdall-api
+    #restart: always
+    build: .
+    ports:
+      - "3000:3000"
+    links:
+      - mongodb
+    environment:
+      DB_URI: mongodb://mongodb
+      DB_NAME: heimdall_api
+      PORT: 3000
+      CRON_EXPRESSION: "*/2 * * * * *"

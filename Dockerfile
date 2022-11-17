@@ -8,6 +8,6 @@ COPY . .
 
 RUN npm install --only=prod
 
-EXPOSE 8081
+EXPOSE 3000
 
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "start"]

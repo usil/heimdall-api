@@ -3,8 +3,10 @@ const moment = require('moment');
 const { registerPing } = require('../controllers/Ping');
 const { requestStatus } = require('./TestWeb');
 
-const pingToUrl = async ({ url, port, cronExpression = "*/2 * * * * *", printResultShell = false }) => {
-  schedule.scheduleJob(cronExpression, async () => {
+const CRON_EXPRESSION = process.env.CRON_EXPRESSION;
+
+const pingToUrl = async ({ url, port, printResultShell = false }) => {
+  schedule.scheduleJob(CRON_EXPRESSION, async () => {
     let date = moment()
 
     let statusCode = await requestStatus(`${url.trim()}${port ? ':' + port.trim() : ''}`);

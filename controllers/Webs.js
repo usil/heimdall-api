@@ -11,7 +11,7 @@ const createWeb = async (dataWeb) => {
     let response = await Web.create(body);
     return response;
   } catch (err) {
-    return `[WEB:ERROR_CREATE_WEB] ${err}`
+    console.log(`[WEB:ERROR_CREATE_WEB] ${err}`)
   }
 }
 
@@ -23,6 +23,7 @@ const getWebs = async (req, res) => {
     const data = await Web.find({});
     res.send({ data })
   } catch (err) {
+    console.log(`[WEB:GET_WEBS] ${err}`)
     res.send(`[WEB:GET_WEBS] ${err}`)
   }
 }
@@ -75,6 +76,7 @@ const getResultWeb = async (req, res) => {
     }
     res.send([statusWeb])
   } catch (err) {
+    console.log(`[WEB:ERROR_GET_RESULT_WEB] ${err}`)
     res.send(`[WEB:ERROR_GET_RESULT_WEB] ${err}`)
   }
 }
@@ -133,6 +135,7 @@ const getResultsWeb = async (req, res) => {
 
     res.send(resultsWeb)
   } catch (err) {
+    console.log(`[WEB:ERROR_GET_RESULT_WEB] ${err}`)
     res.send(`[WEB:ERROR_GET_RESULT_WEB] ${err}`)
   }
 }
