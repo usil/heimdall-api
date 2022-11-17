@@ -20,7 +20,7 @@ app.use('/', require('./routes'))
 
 
 app.listen(port, () => {
-  console.log(`Exposed port for api : http://127.0.0.1:${port}`)
+  console.log(`Our api is running on : http://127.0.0.1:${port}`)
 });
 
 dbConnectMongo();
