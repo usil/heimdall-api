@@ -1,24 +1,37 @@
-const Web = require('../models/Webs');
-const PingService = require('./PingService');
+const WebModel = require('../models/Webs');
 const moment = require('moment');
 
 @Service
-function WebService() {
+function WebsiteService() {
+
+  @Autowire(name = "pingService")
+  this.pingService;  
 
   /**
    * Registrar web para test
    */
   this.createWeb = async (dataWeb) => {
     const body = dataWeb;
-    let response = await Web.create(body);
+    let response = await WebModel.create(body);
     return response;
   }
+
+  /**
+   * Registrar web para test
+   */
+   this.createWebIfDontExist = async (web) => {
+    const foundWebs = await WebModel.find({ webBaseUrl: web.webBaseUrl })
+    if(foundWebs.length==0){
+      let response = await WebModel.create(web);
+      return response;
+    }    
+  }  
 
   /**
    * Obtener las webs registradas
    */
   this.getWebs = async () => {
-    return await Web.find({});
+    return await WebModel.find({});
   }
 
   /**
@@ -27,9 +40,9 @@ function WebService() {
   this.getResultWeb = async (web, sinceDay) => {
     try {
       
-      const dataWeb = await Web.find({ webBaseUrl: web })
+      const dataWeb = await WebModel.find({ webBaseUrl: web })
 
-      const resultsWebs = await PingService.getResultWebs(web, sinceDay);
+      const resultsWebs = await this.pingService.getResultWebs(web, sinceDay);
 
       const statusWeb = {
         webBaseUrl: dataWeb[0].webBaseUrl,
@@ -68,7 +81,7 @@ function WebService() {
         }
       }
 
-      return [statusWeb];
+      return statusWeb;
     } catch (err) {
       console.error("Error while web and results were beign merged");
       throw err;
@@ -80,13 +93,13 @@ function WebService() {
    */
   this.getResultsWeb = async (sinceDay) => {
     try {
-      const webs = await Web.find({});
+      const webs = await WebModel.find({});
       let resultsWeb = [];
 
       for (const web of webs) {
         let web_base_url = web.webBaseUrl;
 
-        const resultDataWeb = await PingService.getResultWebs(web_base_url, sinceDay);
+        const resultDataWeb = await this.pingService.getResultWebs(web_base_url, sinceDay);
         const statusWeb = {
           webBaseUrl: web.webBaseUrl,
           description: web.description,
@@ -137,4 +150,4 @@ function WebService() {
 
 }
 
-module.exports = WebService;
+module.exports = WebsiteService;

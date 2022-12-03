@@ -26,24 +26,27 @@
         "jwtExpiration": "3600s",
         "disableRoutes": true
     },
-    "targetWebs": [
+    "websites": [
         {
           "url": "https://aj-derteano.github.io",
           "name": "porfolio",
           "description": "Web de portafolio",
-          "expected_code": 200
+          "expected_code": 200,
+          "cronExpression": "*/10 * * * * *"
         },
         {
           "url": "test.com",
           "name": "test",
           "description": "Web de prueba",
-          "expected_code": 500
+          "expected_code": 500,
+          "cronExpression": "*/10 * * * * *"
         },
         {
           "url": "https://gist.githubusercontent.com",
           "name": "Test 2",
           "description": "Web de prueba",
-          "expected_code": 200
+          "expected_code": 200,
+          "cronExpression": "*/10 * * * * *"
         }
       ]
 }

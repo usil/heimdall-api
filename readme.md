@@ -45,23 +45,21 @@ GET http://localhost:3000/monitor/target
 }
 ```
 
-http://localhost:3000/monitor/target/result-sumary/web1?sinceDay=90&web=https://aj-derteano.github.io
+http://localhost:2104/v1/monitor/website?sinceDay=90&website=https://aj-derteano.github.io
 
 ```json 
-[
-    {
-        "webBaseUrl": "https://aj-derteano.github.io",
-        "description": "Web de portafolio",
-        "globalStatus": "Operational",
-        "statusDetail": [
-            {
-                "dateString": "2022-12-02",
-                "averageResponseTimeMillis": 51.857142857142854,
-                "incidentsCount": 0
-            }
-        ]
-    }
-]
+{
+    "webBaseUrl": "https://aj-derteano.github.io",
+    "description": "Web de portafolio",
+    "globalStatus": "Operational",
+    "statusDetail": [
+        {
+            "dateString": "2022-12-02",
+            "averageResponseTimeMillis": 51.857142857142854,
+            "incidentsCount": 0
+        }
+    ]
+}
 ```
 
 // Ver los resultados de los PING

@@ -1,69 +1,71 @@
-const Ping = require('../models/Ping');
+const PingModel = require('../models/Ping');
 const moment = require('moment');
 
-/**
- * Obtener estatus de las webs
- */
-const getResultWebs = async (web, sinceDay) => {
-  let since_day = moment().subtract(sinceDay, 'd')
+@Service
+function PingService() {
 
-  try {
-    const webResults = await Ping.find({
-      webBaseUrl: web,
-      dateString: {
-        $gt: since_day.format('YYYY-MM-DD')
-      }
-    })
-      .sort({
-        webBaseUrl: 'asc',
-        dateString: 'desc'
-      });
+  /**
+   * Obtener estatus de las webs
+   */
+  this.getResultWebs = async (web, sinceDay) => {
+    let since_day = moment().subtract(sinceDay, 'd')
 
-    let resultAdapter = [];
-    let dataAdapter = [];
-    let dateString = null;
-    let countResult = 0;
+    try {
+      const webResults = await PingModel.find({
+        webBaseUrl: web,
+        dateString: {
+          $gt: since_day.format('YYYY-MM-DD')
+        }
+      })
+        .sort({
+          webBaseUrl: 'asc',
+          dateString: 'desc'
+        });
 
-    for (const webResult of webResults) {
-      countResult++;
+      let resultAdapter = [];
+      let dataAdapter = [];
+      let dateString = null;
+      let countResult = 0;
 
-      if (dateString !== webResult.dateString || webResults.length === countResult) {
+      for (const webResult of webResults) {
+        countResult++;
 
-        if (dataAdapter.length > 0 && webResults.length !== countResult) {
-          resultAdapter.push(dataAdapter)
-          dataAdapter = [];
+        if (dateString !== webResult.dateString || webResults.length === countResult) {
+
+          if (dataAdapter.length > 0 && webResults.length !== countResult) {
+            resultAdapter.push(dataAdapter)
+            dataAdapter = [];
+          }
+
+          dateString = webResult.dateString
         }
 
-        dateString = webResult.dateString
+        if (webResults.length === countResult) {
+          resultAdapter.push(dataAdapter)
+        }
+
+        dataAdapter.push(webResult)
       }
 
-      if (webResults.length === countResult) {
-        resultAdapter.push(dataAdapter)
-      }
-
-      dataAdapter.push(webResult)
+      return resultAdapter
+    } catch (err) {
+      console.log(`[WEB:ERROR_GET_RESULT_WEBS] ${err}`)
     }
-
-    return resultAdapter
-  } catch (err) {
-    console.log(`[WEB:ERROR_GET_RESULT_WEBS] ${err}`)
   }
-}
 
-/**
- * Registrar estado del test
- */
-const registerPing = async (webDataPing) => {
-  try {
-    const body = webDataPing;
-    let response = await Ping.create(body);
-    return response;
-  } catch (err) {
-    console.log(`[PING:ERROR_REGISTER_PING] ${err}`)
+  /**
+   * Registrar estado del test
+   */
+  this.registerPing = async (webDataPing) => {
+    try {
+      const body = webDataPing;
+      let response = await PingModel.create(body);
+      return response;
+    } catch (err) {
+      console.log(`[PING:ERROR_REGISTER_PING] ${err}`)
+    }
   }
+
 }
 
-module.exports = {
-  getResultWebs,
-  registerPing
-}
+module.exports = PingService;

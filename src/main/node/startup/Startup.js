@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const WebService = require('./services/WebService')
 
 @ServerInitializer
 function Startup() {
@@ -7,8 +6,15 @@ function Startup() {
     @Autowire(name = "configuration")
     this.configuration;
 
+    @Autowire(name = "websiteService")
+    this.websiteService;
+
+    @Autowire(name = "simpleScheduler")
+    this.simpleScheduler;    
+
     this.onBeforeLoad = async() => {
         await this.configureDatabase();
+        await this.registerWebsAndSchedule();
     }
 
     this.configureDatabase = async() => {
@@ -29,17 +35,24 @@ function Startup() {
         }
     }
     
-    this.registerWebs = async() => {
+    this.registerWebsAndSchedule = async() => {
         
-        for (const web of config.url_webs) {
-          const { url, expected_code, name, description } = web;
+        for (const web of this.configuration.websites) {
+          const { url, expected_code, name, description, cronExpression } = web;
           let dataWeb = {
             webBaseUrl: url,
             name,
             description,
             expectResponseCode: expected_code
           }
-          Webs.createWeb(dataWeb)
+          await this.websiteService.createWebIfDontExist(dataWeb)
+          this.simpleScheduler.scheduleSimplePing({
+            name,
+            url,
+            expected_code,
+            printResultShell: true,
+            cronExpression
+          })
         }
     }
 
