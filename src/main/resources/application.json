@@ -32,21 +32,21 @@
           "name": "porfolio",
           "description": "Web de portafolio",
           "expected_code": 200,
-          "cronExpression": "*/10 * * * * *"
+          "cronExpression": "*/59 * * * * *"
         },
         {
           "url": "test.com",
           "name": "test",
           "description": "Web de prueba",
           "expected_code": 500,
-          "cronExpression": "*/10 * * * * *"
+          "cronExpression": "*/59 * * * * *"
         },
         {
           "url": "https://gist.githubusercontent.com",
           "name": "Test 2",
           "description": "Web de prueba",
           "expected_code": 200,
-          "cronExpression": "*/10 * * * * *"
+          "cronExpression": "*/59 * * * * *"
         }
       ]
 }

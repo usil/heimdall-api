@@ -43,7 +43,7 @@ describe('MonitorRoute', function () {
 
         const app = express();
         server = http.createServer(app);
-        app.get("/v1/monitor/website", monitorRoute.findWebsiteDataMonitor)
+        app.get("/v1/monitor/website", monitorRoute.findMonitorsByWebsiteAndStartDate)
         server.listen(0); //i dont know why is sync
         const response = await request(app).get('/v1/monitor/website?sinceDay=90&website=https://aj-derteano.github.io');
 
@@ -58,83 +58,4 @@ describe('MonitorRoute', function () {
         expect(responseObject.statusDetail[0].incidentsCount).to.eql(0);
     });
 
-    /*it('should return 500001 if yaml is not sent', async function() {
-
-        function devopsSettingsServiceMock() {
-            this.createDevopsSettings = function() {
-                return [666];
-            }
-        }
-
-        var devops = new Devops();
-        devops.devopsSettingsService = new devopsSettingsServiceMock();
-
-        const app = express();
-        server = http.createServer(app);
-        app.post("/v1/devops/settings/variables", devops.createDevopsSettingsAndVariables)
-        server.listen(0); //i dont know why is sync
-        const response = await request(app).post('/v1/devops/settings/variables?repositoryName=acme&branchFilter=*&mailsToNotify=foo@bar.com');
-
-        expect(response.status).to.eql(500);
-        var responseObject = JSON.parse(response.text);
-        expect(responseObject.code).to.eql(ApiResponseCodes.missing_yaml);
-
-    });
-
-
-    it('should return the expected json', async function() {
-
-        function databaseConnectorMock() {
-            function knexCore() {
-                this.insert = () => {
-                    return [666];
-                }
-            }
-
-            this.transaction = () => {}
-            this.rollback = () => {}
-            this.commit = () => {}
-
-            return new knexCore();
-        }
-
-        function devopsSettingsServiceMock() {
-            this.createDevopsSettings = function() {
-                return [666];
-            }
-        }
-
-        function devopsVariablesServiceMock() {
-            this.createVariable = function() {
-                return 667;
-            }
-        }
-
-        var devops = new Devops();
-        devops.devopsSettingsService = new devopsSettingsServiceMock();
-        devops.devopsVariablesService = new devopsVariablesServiceMock();        
-
-        const yaml = await fs.readFile(path.join(__dirname, "sample.yaml"), 'utf8');
-
-        const app = express();
-        var multiParserMiddleware = new MultiParserMiddleware();
-        app.use(multiParserMiddleware.parser());
-        server = http.createServer(app);
-        app.post("/v1/devops/settings/variables", devops.createDevopsSettingsAndVariables)
-        server.listen(0); //i dont know why is sync
-
-        const response = await request(app)
-            .post('/v1/devops/settings/variables?repositoryName=acme&branchFilter=*&mailsToNotify=foo@bar.com')
-            .set('Content-type', 'text/yaml')
-            .send(yaml);
-
-        expect(response.status).to.eql(200);
-
-        var responseObject = JSON.parse(response.text);
-        expect(responseObject.code).to.eql(200000);
-        expect(responseObject.content.variablesIds.length).to.eql(4);
-        expect(responseObject.content.variablesIds[0]).to.eql(667);
-        expect(responseObject.content.variablesIds[1]).to.eql(667);
-
-    });*/
 });

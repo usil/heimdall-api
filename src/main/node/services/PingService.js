@@ -49,7 +49,9 @@ function PingService() {
 
       return resultAdapter
     } catch (err) {
-      console.log(`[WEB:ERROR_GET_RESULT_WEBS] ${err}`)
+      console.error("Error while result data was being retrieved");
+      console.error(err);
+      throw err;
     }
   }
 
@@ -62,7 +64,9 @@ function PingService() {
       let response = await PingModel.create(body);
       return response;
     } catch (err) {
-      console.log(`[PING:ERROR_REGISTER_PING] ${err}`)
+      console.error("Error while ping data was being created");
+      console.error(err);
+      throw err;
     }
   }
 

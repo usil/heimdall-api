@@ -25,9 +25,10 @@ function SimpleScheduler() {
       }
   
       let res = await this.pingService.registerPing(resultWeb)
-      
-      if (printResultShell)
-        console.log(`Status web:\n\twebBaseUrl: ${resultWeb.webBaseUrl}\n\tresponseCode: ${statusCode}\n\tresponseTimeMillis: ${resultWeb.responseTimeMillis}`)
+      if(statusCode!=200 && printResultShell){
+        console.log(`webBaseUrl: ${resultWeb.webBaseUrl}\tresponseCode: ${statusCode}\tresponseTimeMillis: ${resultWeb.responseTimeMillis}`)
+      }
+        
     });
   }
 

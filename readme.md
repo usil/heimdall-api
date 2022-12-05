@@ -6,7 +6,7 @@
 
 
 // Listar webs registradas
-GET http://localhost:3000/monitor/target
+GET http://localhost:2104/v1/website
 
 ```json 
 {
@@ -45,7 +45,7 @@ GET http://localhost:3000/monitor/target
 }
 ```
 
-http://localhost:2104/v1/monitor/website?sinceDay=90&website=https://aj-derteano.github.io
+http://localhost:2104/v1/monitor/website?daysAgo=90&webBaseUrl=https://aj-derteano.github.io
 
 ```json 
 {
@@ -63,7 +63,7 @@ http://localhost:2104/v1/monitor/website?sinceDay=90&website=https://aj-derteano
 ```
 
 // Ver los resultados de los PING
-GET http://localhost:3000/monitor/target/result-sumary/webs?sinceDay=90
+GET http://localhost:2104/v1/monitor?daysAgo=90
 
 ```json
 [

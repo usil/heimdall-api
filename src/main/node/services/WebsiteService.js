@@ -37,12 +37,26 @@ function WebsiteService() {
   /**
    * Obtener el resultado de una web
    */
-  this.getResultWeb = async (web, sinceDay) => {
+  this.getResultWeb = async (webBaseUrl, daysAgo) => {
+
+    if(webBaseUrl==null){
+      throw new Error("webBaseUrl is required");
+    }
+
+    if(daysAgo==null){
+      throw new Error("daysAgo is required");
+    }
+
+    var num = new Number(daysAgo);
+    if(num < 0  ||  num > 90)  {
+      throw new Error("daysAgo should be an integer number from 0 to 90");
+    }
+
     try {
       
-      const dataWeb = await WebModel.find({ webBaseUrl: web })
+      const dataWeb = await WebModel.find({ webBaseUrl: webBaseUrl })
 
-      const resultsWebs = await this.pingService.getResultWebs(web, sinceDay);
+      const resultsWebs = await this.pingService.getResultWebs(webBaseUrl, daysAgo);
 
       const statusWeb = {
         webBaseUrl: dataWeb[0].webBaseUrl,
@@ -84,6 +98,7 @@ function WebsiteService() {
       return statusWeb;
     } catch (err) {
       console.error("Error while web and results were beign merged");
+      console.error(err);
       throw err;
     }
   }
@@ -91,15 +106,25 @@ function WebsiteService() {
   /**
    * Obtener el resultado de todas las webs
    */
-  this.getResultsWeb = async (sinceDay) => {
+  this.getResultsWeb = async (daysAgo) => {
+
+    if(daysAgo==null){
+      throw new Error("daysAgo is required");
+    }
+
+    var num = new Number(daysAgo);
+    if(num < 0  ||  num > 90)  {
+      throw new Error("daysAgo should be an integer number from 0 to 90");
+    }
+
     try {
       const webs = await WebModel.find({});
       let resultsWeb = [];
 
       for (const web of webs) {
         let web_base_url = web.webBaseUrl;
+        const resultDataWeb = await this.pingService.getResultWebs(web_base_url, daysAgo);
 
-        const resultDataWeb = await this.pingService.getResultWebs(web_base_url, sinceDay);
         const statusWeb = {
           webBaseUrl: web.webBaseUrl,
           description: web.description,
@@ -138,11 +163,10 @@ function WebsiteService() {
 
         resultsWeb.push(statusWeb)
       }
-
-      console.log(resultsWeb);
       return resultsWeb;
     } catch (err) {
       console.error("Error while web results being retrieved");
+      console.error(err);
       throw err;
     }
 
