@@ -106,6 +106,13 @@ GET http://localhost:2104/v1/monitor?daysAgo=90
 ]
 ```
 
+
+curl -X POST -d '{"identifier":"jane@acme.com", "secret":"changeme", "role": "read-today-detail"}' http://localhost:2104/v1/oauth2/subject -H content-type:application/json
+
+
+ curl -X POST -d '{"username":"jane@acme.com", "password":"changeme", "grant_type":"password"}' http://localhost:2104/v1/oauth2/token -H content-type:application/json  -v
+
+
 ## Collections
 
 | Collection | field       | type    | description |
