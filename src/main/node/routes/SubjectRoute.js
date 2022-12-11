@@ -8,7 +8,7 @@ function SubjectRoute(){
 
   this.saltRounds = 10;
   
-  @Protected(permission="aaaaa:bbbb:bbbbb")
+  @Protected(permission="heimdall-api:subject:create")
   @Post(path = "/v1/oauth2/subject")
   this.create = async(req, res) => {
 

@@ -1,8 +1,9 @@
 const jwt = require('jsonwebtoken')
-const ObjectHelper = require('../common/object/ObjectHelper.js')
+const ObjectHelper = require('$/src/main/node/common/ObjectHelper.js')
+const HeimdallApiHelper = require('$/src/main/node/common/HeimdallApiHelper.js');
 
-
-function SecurityService()
+@Service
+function SecurityMiddleware(){
 
   @Autowire(name = "configuration")
   this.configuration;
@@ -10,12 +11,32 @@ function SecurityService()
   @Autowire(name = "subjectService")
   this.subjectService;
 
-  this.permissionsByRouteStrings;
+  @Autowire(name = "permissionService")
+  this.permissionService
+
+  @Autowire(name = "express")
+  this.express;  
+
+  @Autowire(name = "rawDependencies")
+  this.rawDependencies;    
+
+  var permissionsByRouteStrings;
+  
+  this.configure = async () => {
+    var heimdallApiHelper = new HeimdallApiHelper();
+    permissionsByRouteStrings = heimdallApiHelper.getPermissionsByStringRoute(this.rawDependencies);
+    this.express.use(this.ensureAuthorizationMiddleware)
+  }
 
   this.ensureAuthorizationMiddleware = async (req, res, next) => {
 
+    var url = req.originalUrl;
+    if(typeof permissionsByRouteStrings[url] === 'undefined'){
+      return next();
+    }
+    var permissionRawString = permissionsByRouteStrings[url];
+
     if(!ObjectHelper.hasProperty(this.configuration, "oauth2.jwtSecret")){
-      console.log("oauth2.jwtSecret was not found");
       res.status(500);
       return res.json({
         code: 500002,
@@ -107,12 +128,12 @@ function SecurityService()
         });
       }
     }
-
+    
     var permissionScope = permissionRawString.split(":");
     var resource = `${permissionScope[0].trim()}:${permissionScope[1].trim()}`;
-    var validator = await this.iamDataService.hasPermissions(subject[0].role, resource, permissionScope[2].trim());
+    var hasPermissions = await this.permissionService.hasPermissions(subject[0].role, resource, permissionScope[2].trim());
 
-    if(validator.has_permission === "false"){
+    if(!hasPermissions){
       res.status(403);
       return res.json({
         code: 403003,
@@ -128,4 +149,4 @@ function SecurityService()
   }
 }
 
-module.exports = SecurityService;
+module.exports = SecurityMiddleware;

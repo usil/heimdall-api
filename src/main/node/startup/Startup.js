@@ -15,8 +15,14 @@ function Startup() {
   @Autowire(name = "express")
   this.express;  
 
+  @Autowire(name = "securityMiddleware")
+  this.securityMiddleware;  
+
   @Autowire(name = "rawDependencies")
-  this.rawDependencies;  
+  this.rawDependencies;
+
+  @Autowire(name = "subjectService")
+  this.subjectService;    
 
   this.onBeforeLoad = async () => {
     this.registerOauth2Middleware();
@@ -25,31 +31,7 @@ function Startup() {
   }
 
   this.registerOauth2Middleware = async () => {
-    var permissionsByRoute = {};
-    this.rawDependencies.filter((dependency)=> {
-
-      if(dependency.meta.name !== "Route"){
-        return;
-      }
-
-      var allowedMethods = ["Post", "Get", "Put", "Delete"];
-      for(var functionName in dependency.functions){
-        var functionAnnotations = dependency.functions[functionName];
-        var protectedAnnotation = functionAnnotations.find(functionAnnotation => functionAnnotation.name === "Protected")
-        if(typeof protectedAnnotation === 'undefined') continue;
-        var routeAnnotation = functionAnnotations.find(functionAnnotation => allowedMethods.includes(functionAnnotation.name))
-        if(typeof routeAnnotation === 'undefined') continue;    
-        permissionsByRoute[routeAnnotation.arguments.path] = protectedAnnotation.arguments.permission;
-      }
-      
-    });
-
-    console.log(JSON.stringify(permissionsByRoute, null, 4))
-
-    this.express.use((req, res, next) => {
-      console.log(req.originalUrl)
-      next()
-    })
+    this.securityMiddleware.configure();
   }
 
   this.configureDatabase = async () => {
@@ -69,6 +51,11 @@ function Startup() {
       console.log('MongoDB database connection established successfully');
     }
   }
+
+  this.createAdminClient = async () => {
+    var adminClientResult = await this.subjectService.findByIdentifier(this.configureDatabase.oauth2.adminClient);
+    
+  }  
 
   this.registerWebsAndSchedule = async () => {
 

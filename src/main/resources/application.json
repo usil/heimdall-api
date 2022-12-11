@@ -24,7 +24,9 @@
     "oauth2": {
         "jwtSecret": "changeme",
         "jwtExpiration": "3600s",
-        "disableRoutes": true
+        "disableRoutes": true,
+        "adminClient": "admin.heimdall.apos.com",
+        "adminSecret": "changeme"
     },
     "websites": [
         {
