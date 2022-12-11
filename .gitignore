@@ -4,9 +4,10 @@ node_modules
 node_modules
 .nyc_output
 nohup.out
-!/coverage
-/coverage/*
-!/coverage/lines.svg
-!/coverage/statements.svg
-!/coverage/branches.svg
-!/coverage/functions.svg
+coverage
+!/badges
+/badges/*
+!/badges/badge-lines.svg
+!/badges/badge-statements.svg
+!/badges/badge-branches.svg
+!/badges/badge-functions.svg

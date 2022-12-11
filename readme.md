@@ -1,6 +1,6 @@
 # Heimdall Api
 
-|![](./coverage/lines.svg) |![](./coverage/statements.svg) | ![](./coverage/branches.svg) | ![](./coverage/functions.svg)| 
+|![](./.badges/badge-lines.svg) |![](./.badges/badge-statements.svg) | ![](./.badges/badge-branches.svg) | ![](./.badges/badge-functions.svg)| 
 |--|--|--|--|
 
 

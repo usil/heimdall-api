@@ -1,4 +1,4 @@
-require('nodejs-require-enhancer');
+const include = require('nodejs-require-enhancer');
 const NodeInternalModulesHook = require('meta-js').NodeInternalModulesHook;
 NodeInternalModulesHook._compile();
 
@@ -14,9 +14,15 @@ const http = require('http');
 const fs = require('fs').promises;
 const path = require('path');
 
-const WebsiteRoute = require('$/src/main/node/routes/WebsiteRoute.js');
+const WebsiteRoute = include('/src/main/node/routes/WebsiteRoute.js');
 
 describe('WebsiteRoute', function () {
+
+    var server;
+
+    afterEach(async () => {
+      await server.close();
+    });    
 
     it('findAll - should return all the websites', async function () {
 

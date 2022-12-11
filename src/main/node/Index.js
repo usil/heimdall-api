@@ -1,5 +1,5 @@
-require('nodejs-require-enhancer');
-const AdvancedLog = require('$/src/main/node/common/AdvancedLog.js');
+const include = require('nodejs-require-enhancer');
+const AdvancedLog = include('/src/main/node/common/AdvancedLog.js');
 new AdvancedLog().config({
     logLevel: process.env.HEIMDALL_LOG_LEVEL
 });

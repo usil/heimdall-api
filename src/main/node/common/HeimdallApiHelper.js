@@ -1,4 +1,5 @@
-const ApiResponseCodes = require('$/src/main/node/common/ApiResponseCodes.js');
+const include = require('nodejs-require-enhancer');
+const ApiResponseCodes = include('/src/main/node/common/ApiResponseCodes.js');
 
 function HeimdallApiHelper(){
   

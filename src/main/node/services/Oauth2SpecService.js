@@ -1,7 +1,8 @@
+const include = require('nodejs-require-enhancer');
 const escape = require('escape-html');
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt');
-const ObjectHelper = require('$/src/main/node/common/ObjectHelper.js')
+const ObjectHelper = include('/src/main/node/common/ObjectHelper.js')
 
 @Services
 function Oauth2SpecService() {

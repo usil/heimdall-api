@@ -1,4 +1,4 @@
-require('nodejs-require-enhancer');
+const include = require('nodejs-require-enhancer');
 const NodeInternalModulesHook = require('meta-js').NodeInternalModulesHook;
 NodeInternalModulesHook._compile();
 
@@ -14,9 +14,15 @@ const http = require('http');
 const fs = require('fs').promises;
 const path = require('path');
 
-const MonitorRoute = require('$/src/main/node/routes/MonitorRoute.js');
+const MonitorRoute = include('/src/main/node/routes/MonitorRoute.js');
 
 describe('MonitorRoute', function () {
+
+    var server;
+
+    afterEach(async () => {
+      await server.close();
+    });
 
     it('findAll - should return monitor data of all services', async function () {
 

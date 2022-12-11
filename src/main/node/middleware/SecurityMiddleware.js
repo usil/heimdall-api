@@ -1,6 +1,7 @@
+const include = require('nodejs-require-enhancer');
 const jwt = require('jsonwebtoken')
-const ObjectHelper = require('$/src/main/node/common/ObjectHelper.js')
-const HeimdallApiHelper = require('$/src/main/node/common/HeimdallApiHelper.js');
+const ObjectHelper = include('/src/main/node/common/ObjectHelper.js')
+const HeimdallApiHelper = include('/src/main/node/common/HeimdallApiHelper.js');
 
 @Service
 function SecurityMiddleware(){
