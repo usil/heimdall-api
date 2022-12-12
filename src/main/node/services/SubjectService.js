@@ -45,22 +45,21 @@ function SubjectService() {
     return await Subject.find({ identifier: identifier });
   }
 
-  this.updateByIdentifier = async (identifier, role, secret) => {
-
+  this.updateByIdentifier = async (subject) => {
     var hashedSecret;
-    if(typeof secret !== 'undefined'){
-      hashedSecret = await bcrypt.hash(subject.client_secret, this.saltRounds)
+    if(typeof subject.secret !== 'undefined'){
+      hashedSecret = await bcrypt.hash(subject.secret, this.saltRounds)
     }
 
     return await Subject.updateOne
     (
       {
-        identifier : identifier
+        identifier : subject.identifier
       },
       {
         $set :
         {
-          role : role,
+          role : subject.role,
           secret : hashedSecret
         }
       }

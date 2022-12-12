@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 @ServerInitializer
-function Startup() {
+  function Startup() {
 
   @Autowire(name = "configuration")
   this.configuration;
@@ -13,16 +13,19 @@ function Startup() {
   this.simpleScheduler;
 
   @Autowire(name = "express")
-  this.express;  
+  this.express;
 
   @Autowire(name = "securityMiddleware")
-  this.securityMiddleware;  
+  this.securityMiddleware;
 
   @Autowire(name = "rawDependencies")
   this.rawDependencies;
 
   @Autowire(name = "subjectService")
-  this.subjectService;    
+  this.subjectService;
+
+  @Autowire(name = "permissionService")
+  this.permissionService;
 
   this.onBeforeLoad = async () => {
     this.registerOauth2Middleware();
@@ -55,17 +58,37 @@ function Startup() {
 
   this.createAdminClient = async () => {
     var adminClientResult = await this.subjectService.findByIdentifier(this.configuration.oauth2.adminInitialClient);
-    if(typeof adminClientResult !== 'undefined' && adminClientResult.length > 0){
+    if (typeof adminClientResult !== 'undefined' && adminClientResult.length > 0) {
       console.log("initial admin already exist")
+    } else {
+      //#TODO: validate if there is at least other admin
+      await this.subjectService.createClient({
+        client_id: this.configuration.oauth2.adminInitialClient,
+        client_secret: this.configuration.oauth2.adminInitialSecret,
+        role: "admin"
+      });
+      console.log("initial admin client was created")
+    }
+
+    var adminRoleSearchResult = await this.permissionService.findByRole("admin");
+    if (typeof adminRoleSearchResult !== 'undefined' && adminRoleSearchResult.length > 0) {
+      console.log("admin role already exist")
       return;
     }
-    //#TODO: validate if there is at least other admin
-    await this.subjectService.createClient({client_id:this.configuration.oauth2.adminInitialClient,
-      client_secret:this.configuration.oauth2.adminInitialSecret,
-      role:"admin"
+    //#TODO: validate if admin has the default or expected resources and actions
+    var resource = "heimdall-api"
+    await this.permissionService.create({
+      role: "admin",
+      resource: resource + ":subject",
+      action: "create"
     });
-    console.log("initial admin was created")
-  }  
+    await this.permissionService.create({
+      role: "admin",
+      resource: resource + ":subject",
+      action: "update"
+    });
+    console.log("at least one admin role exist")    
+  }
 
   this.registerWebsAndSchedule = async () => {
 

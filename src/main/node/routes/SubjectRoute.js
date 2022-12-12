@@ -33,7 +33,7 @@ function SubjectRoute(){
   this.update = async(req, res) => {
 
     var alreadyExistUserResult = await this.subjectService.findByIdentifier(req.body.identifier);
-    if(typeof alreadyExistUserResult!== 'undefined' || alreadyExistUserResult.length == 0){
+    if(typeof alreadyExistUserResult === 'undefined' || alreadyExistUserResult.length == 0){
       return res.json({code:200404, message:"success"});
     }
    
@@ -42,6 +42,8 @@ function SubjectRoute(){
       secret: req.body.secret,
       role:req.body.role
     });
+
+    console.log(updateResponse)
 
     if(updateResponse){
       return res.json({code:200000, message:"success"});

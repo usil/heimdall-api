@@ -107,13 +107,13 @@ GET http://localhost:2104/v1/monitor?daysAgo=90
 ```
 
 
-curl -X POST -d '{"client_id":"admin-heimdall-client.apps.com", "client_secret":"changeme", "grant_type":"client_credentials"}' http://localhost:2104/v1/oauth2/token -H content-type:application/json  -v
+curl -X POST -d '{"client_id":"admin-heimdall-client.apps.com", "client_secret":"changeme", "grant_type":"client_credentials"}' http://localhost:2104/v1/oauth2/token -H content-type:application/json
 
 
 curl -X POST -d '{"username":"jane@acme.com", "secret":"changeme", "role": "read-today-detail"}' http://localhost:2104/v1/oauth2/subject -H content-type:application/json
 
 
-curl -X PUT -d '{"identifier":"admin-heimdall-client.apps.com", "secret":"changeme2", "role": "admin"}' http://localhost:2104/v1/oauth2/subject -H content-type:application/json -H "Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0X2lkZW50aWZpZXIiOiJhZG1pbi1oZWltZGFsbC1jbGllbnQuYXBwcy5jb20iLCJ0eXBlIjoiYWNjIiwiaWF0IjoxNjcwODA2NjI1LCJleHAiOjE2NzA4MTAyMjV9.hPQWNzz-1ibDChmTjH6gMidyoOh7X88Kcmbg1v51URc"
+curl -X PUT -d '{"identifier":"admin-heimdall-client.apps.com", "secret":"changeme2", "role": "admin"}' http://localhost:2104/v1/oauth2/subject -H content-type:application/json -H "Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0X2lkZW50aWZpZXIiOiJhZG1pbi1oZWltZGFsbC1jbGllbnQuYXBwcy5jb20iLCJ0eXBlIjoiYWNjIiwiaWF0IjoxNjcwODIwNDg1LCJleHAiOjE2NzA4MjQwODV9.FqgITHSyyY4M6VlIZJ2dGCi1zySvaRhwmXiLpXcBHbQ"
 
 
 

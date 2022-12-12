@@ -10,6 +10,19 @@ function PermissionService() {
     return result.length > 0;
   }
 
+  this.findByRole = async (role) => {
+    return await Permission.find({ role: role });
+  }
+  
+  this.create = async (permission) => {
+    let response = await Permission.create({ 
+      role: permission.role, 
+      resource: permission.resource, 
+      action: permission.action
+    });
+    return response;
+  }  
+
 }
 
 module.exports = PermissionService;
