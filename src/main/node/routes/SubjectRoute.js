@@ -27,6 +27,29 @@ function SubjectRoute(){
     }
     
   }
+
+  @Protected(permission="heimdall-api:subject:update")
+  @Put(path = "/v1/oauth2/subject")
+  this.update = async(req, res) => {
+
+    var alreadyExistUserResult = await this.subjectService.findByIdentifier(req.body.identifier);
+    if(typeof alreadyExistUserResult!== 'undefined' || alreadyExistUserResult.length == 0){
+      return res.json({code:200404, message:"success"});
+    }
+   
+    var updateResponse = await this.subjectService.updateByIdentifier({
+      identifier:req.body.identifier,
+      secret: req.body.secret,
+      role:req.body.role
+    });
+
+    if(updateResponse){
+      return res.json({code:200000, message:"success"});
+    }else{
+      return res.json({code:200409, message:"success"});
+    }
+    
+  }
 }
 
 module.exports = SubjectRoute;

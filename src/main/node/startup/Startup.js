@@ -27,6 +27,7 @@ function Startup() {
   this.onBeforeLoad = async () => {
     this.registerOauth2Middleware();
     await this.configureDatabase();
+    await this.createAdminClient();
     await this.registerWebsAndSchedule();
   }
 
@@ -53,8 +54,17 @@ function Startup() {
   }
 
   this.createAdminClient = async () => {
-    var adminClientResult = await this.subjectService.findByIdentifier(this.configureDatabase.oauth2.adminClient);
-    
+    var adminClientResult = await this.subjectService.findByIdentifier(this.configuration.oauth2.adminInitialClient);
+    if(typeof adminClientResult !== 'undefined' && adminClientResult.length > 0){
+      console.log("initial admin already exist")
+      return;
+    }
+    //#TODO: validate if there is at least other admin
+    await this.subjectService.createClient({client_id:this.configuration.oauth2.adminInitialClient,
+      client_secret:this.configuration.oauth2.adminInitialSecret,
+      role:"admin"
+    });
+    console.log("initial admin was created")
   }  
 
   this.registerWebsAndSchedule = async () => {

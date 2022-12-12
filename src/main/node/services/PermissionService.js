@@ -1,5 +1,4 @@
 const Permission = require('../models/Permission');
-const bcrypt = require('bcrypt');
 
 @Service
 function PermissionService() {

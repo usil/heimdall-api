@@ -106,14 +106,14 @@ function Oauth2SpecService() {
                     type: "acc",
                     lltu: longLiveTokenUuid
                 },
-                this.configuration.nodeboot.oauth2.jwtSecret, jwtExpiration);
+                this.configuration.oauth2.jwtSecret, jwtExpiration);
         } else {
             access_token = generateJwtToken({
                     subject_identifier: subject_identifier,
                     type: "acc",
                     lltu: longLiveTokenUuid
                 },
-                this.configuration.nodeboot.oauth2.jwtSecret);
+                this.configuration.oauth2.jwtSecret);
         }
 
         let response = {

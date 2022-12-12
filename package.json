@@ -6,10 +6,8 @@
   "scripts": {
     "start": "node src/main/node/Index.js",
     "dev": "NODE_ENV=development nodemon --watch src -e js,json src/main/node/Index.js",
-    "testj": "jest --coverage  --silent && jest-badge-generator",
-    "test": "nyc --reporter=html --reporter=json-summary mocha  'src/test/node/**/*.test.js' --exit --require mocha-suppress-logs --timeout 100000 && npm run badges",
-    "test_verbose": "nyc --reporter=html --reporter=json-summary mocha  'src/test/node/**/*.test.js' --timeout 100000 --exit",
-    "badges": "badges4cov --source=nyc_json --nyc_json_file_location=./coverage/coverage-summary.json --output_folder=./coverage"
+    "test": "jest --coverage --silent && jest-badge-generator",
+    "test:verbose": "jest --coverage && jest-badge-generator"
   },
   "author": "",
   "license": "MIT",

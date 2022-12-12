@@ -13,7 +13,7 @@ function SecurityMiddleware(){
   this.subjectService;
 
   @Autowire(name = "permissionService")
-  this.permissionService
+  this.permissionService;
 
   @Autowire(name = "express")
   this.express;  
@@ -131,8 +131,30 @@ function SecurityMiddleware(){
     }
     
     var permissionScope = permissionRawString.split(":");
-    var resource = `${permissionScope[0].trim()}:${permissionScope[1].trim()}`;
-    var hasPermissions = await this.permissionService.hasPermissions(subject[0].role, resource, permissionScope[2].trim());
+    var resource;
+    
+    try{
+      resource = `${permissionScope[0].trim()}:${permissionScope[1].trim()}`;
+    }catch(e){
+      console.log(e);
+      res.status(403);
+      return res.json({
+        code: 403004,
+        message: "You are not allowed"
+      });
+    }    
+    
+    var hasPermissions ;
+    try{
+      hasPermissions = await this.permissionService.hasPermissions(subject[0].role, resource, permissionScope[2].trim());
+    }catch(e){
+      console.log(e);
+      res.status(403);
+      return res.json({
+        code: 403005,
+        message: "You are not allowed"
+      });
+    }      
 
     if(!hasPermissions){
       res.status(403);

@@ -7,23 +7,23 @@ function SubjectService() {
   this.saltRounds = 10;
 
   this.createUser = async (subject) => {
-    const hashedValue = await bcrypt.hash(req.body.password, this.saltRounds)
+    const hashedValue = await bcrypt.hash(subject.password, this.saltRounds)
     let response = await Subject.create({ 
-      identifier: req.body.username, 
+      identifier: subject.username, 
       secret: hashedValue, 
-      role: req.body.role,
-      longLiveTokenUuid: req.body.longLiveTokenUuid
+      role: subject.role,
+      longLiveTokenUuid: subject.longLiveTokenUuid
     });
     return response;
   }
 
   this.createClient = async (subject) => {
-    const hashedValue = await bcrypt.hash(req.body.client_secret, this.saltRounds)
+    const hashedValue = await bcrypt.hash(subject.client_secret, this.saltRounds)
     let response = await Subject.create({ 
-      identifier: req.body.client_secret, 
+      identifier: subject.client_id, 
       secret: hashedValue, 
-      role: req.body.role,
-      longLiveTokenUuid: req.body.longLiveTokenUuid
+      role: subject.role,
+      longLiveTokenUuid: subject.longLiveTokenUuid
     });
     return response;
   }  
@@ -44,6 +44,28 @@ function SubjectService() {
   this.findByIdentifier = async (identifier) => {
     return await Subject.find({ identifier: identifier });
   }
+
+  this.updateByIdentifier = async (identifier, role, secret) => {
+
+    var hashedSecret;
+    if(typeof secret !== 'undefined'){
+      hashedSecret = await bcrypt.hash(subject.client_secret, this.saltRounds)
+    }
+
+    return await Subject.updateOne
+    (
+      {
+        identifier : identifier
+      },
+      {
+        $set :
+        {
+          role : role,
+          secret : hashedSecret
+        }
+      }
+    )
+  }  
 
 }
 
