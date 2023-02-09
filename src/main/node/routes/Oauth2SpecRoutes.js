@@ -11,7 +11,7 @@ function Oauth2SpecRoutes() {
   @Post(path = "/v1/oauth2/token")
   this.tokenRoute = async (req, res) => {
 
-    if (!req.is('application/json')) {
+    if (!req.is('application/json') && !req.is('application/x-www-form-urlencoded')) {
       res.status(400);
       return res.json({
         code: 400001,

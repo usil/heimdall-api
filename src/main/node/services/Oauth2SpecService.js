@@ -36,7 +36,7 @@ function Oauth2SpecService() {
             if (typeof generateTokenRequest.client_id === 'undefined' || typeof generateTokenRequest.client_secret === 'undefined') {
                 let response = {
                     code: 401402,
-                    message: "client_id and client_secret is required"
+                    message: "client_id and client_secret are required"
                 };
                 return response;
             }
@@ -46,7 +46,7 @@ function Oauth2SpecService() {
             if (!generateTokenRequest.username || !generateTokenRequest.password) {
                 let response = {
                     code: 401403,
-                    message: "username and password is required"
+                    message: "username and password are required"
                 };
                 return response;
             }

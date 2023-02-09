@@ -30,7 +30,7 @@ const mongoose = require("mongoose");
   this.onBeforeLoad = async () => {
     this.registerOauth2Middleware();
     await this.configureDatabase();
-    await this.createAdminClient();
+    await this.createDefaultAdmin();
     await this.registerWebsAndSchedule();
   }
 
@@ -56,15 +56,16 @@ const mongoose = require("mongoose");
     }
   }
 
-  this.createAdminClient = async () => {
-    var adminClientResult = await this.subjectService.findByIdentifier(this.configuration.oauth2.adminInitialClient);
+  this.createDefaultAdmin = async () => {
+    var adminClientResult = await this.subjectService.findByIdentifier(this.configuration.oauth2.defaultAdminUser);
     if (typeof adminClientResult !== 'undefined' && adminClientResult.length > 0) {
       console.log("initial admin already exist")
     } else {
       //#TODO: validate if there is at least other admin
-      await this.subjectService.createClient({
-        client_id: this.configuration.oauth2.adminInitialClient,
-        client_secret: this.configuration.oauth2.adminInitialSecret,
+      //#TODO: validate not null
+      await this.subjectService.createUser({
+        username: this.configuration.oauth2.defaultAdminUser,
+        password: this.configuration.oauth2.defaultAdminPassword,
         role: "admin"
       });
       console.log("initial admin client was created")

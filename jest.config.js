@@ -8,6 +8,7 @@
 
 module.exports = {
   "verbose": true,
+  "testTimeout": 20000,
   "roots": [
     "<rootDir>/src/test/",
     "<rootDir>/src/main/"

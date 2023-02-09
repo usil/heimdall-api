@@ -1,5 +1,5 @@
 @Route
-function Health(expressInstance){
+function Health(){
   
   @Get(path = "/v1/health")
   this.simpleHealth = (req, res) => {

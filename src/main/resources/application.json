@@ -1,7 +1,7 @@
 {
     "nodeboot": {},
     "login": {
-        "engine": "microsoft",
+        "engine": "default",
         "microsoft": {
             "oauth2BaseUrl": "https://login.microsoftonline.com",
             "userDetailsApiEndpoint": "https://graph.microsoft.com/v1.0/me",
@@ -25,8 +25,8 @@
         "jwtSecret": "changeme",
         "jwtExpiration": "3600s",
         "disableRoutes": true,
-        "adminInitialClient": "admin-heimdall-client.apps.com",
-        "adminInitialSecret": "changeme"
+        "defaultAdminUser": "admin",
+        "defaultAdminPassword": "changeme"
     },
     "websites": [
         {
