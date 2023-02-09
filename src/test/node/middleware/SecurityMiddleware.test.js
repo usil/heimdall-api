@@ -20,7 +20,7 @@ describe('SecurityMiddleware: ensureAuthorization', function() {
     await ligthExpress.server.close();
   });
 
-  it('should return 500 on missing oauth2.jwtSecret', async function() {
+    test('should return 500 on missing oauth2.jwtSecret', async function() {
     var configuration = {}
     var securityMiddleware = new SecurityMiddleware();
     ligthExpress = await TestHelper.createLigthExpress();
@@ -35,7 +35,7 @@ describe('SecurityMiddleware: ensureAuthorization', function() {
     expect(response.status).to.equal(500);
   });
 
-  it('should ignore the security if route is not Protected', async function() {
+    test('should ignore the security if route is not Protected', async function() {
     var configuration = {
       oauth2: {
         jwtSecret: "theprecious"
@@ -56,7 +56,7 @@ describe('SecurityMiddleware: ensureAuthorization', function() {
     expect(response.text).to.equal("im the protected");
   });
 
-  it('should return 401 [Missing token] on missing bearer token', async function() {
+    test('should return 401 [Missing token] on missing bearer token', async function() {
     var configuration = {
       oauth2: {
         jwtSecret: "theprecious"
@@ -75,7 +75,7 @@ describe('SecurityMiddleware: ensureAuthorization', function() {
     const response = await request(ligthExpress.app).post('/foo/bar');
     expect(response.status).to.equal(401);
   });
-  it('should return 401 [Token should be Bearer] on wrong bearer token syntax', async function() {
+    test('should return 401 [Token should be Bearer] on wrong bearer token syntax', async function() {
     var configuration = {
       oauth2: {
         jwtSecret: "theprecious"
@@ -99,7 +99,7 @@ describe('SecurityMiddleware: ensureAuthorization', function() {
     expect(response2.status).to.equal(401)
 
   });
-  it('should return 401 [Invalid token] on malformed bearer token', async function() {
+    test('should return 401 [Invalid token] on malformed bearer token', async function() {
     var configuration = {
       oauth2: {
         jwtSecret: "theprecious"
@@ -118,7 +118,7 @@ describe('SecurityMiddleware: ensureAuthorization', function() {
     const response1 = await request(ligthExpress.app).post('/foo/bar').set({ 'Authorization': 'Bearer 123456789'});;
     expect(response1.status).to.equal(401)
   });
-  it('should return 403 when token is valid but there is a db error or unknown subject', async function() {
+    test('should return 403 when token is valid but there is a db error or unknown subject', async function() {
 
     var token1 = jwt.sign({
       subject_identifier: "jane_doe"
@@ -167,7 +167,7 @@ describe('SecurityMiddleware: ensureAuthorization', function() {
     expect(response2.status).to.equal(403)
 
   });
-  it('should return 403 on valid token and valid subject but without permission', async function() {
+    test('should return 403 on valid token and valid subject but without permission', async function() {
 
     var token = jwt.sign({
       subject_identifier: "jane_doe"
@@ -227,7 +227,7 @@ describe('SecurityMiddleware: ensureAuthorization', function() {
 
   });
 
-  it('should return 403 on valid token with lltu != registered in db', async function() {
+    test('should return 403 on valid token with lltu != registered in db', async function() {
 
     var token = jwt.sign({
       subject_identifier: "jane_doe",
@@ -282,7 +282,7 @@ describe('SecurityMiddleware: ensureAuthorization', function() {
   });
 
 
-  it('should get the protected resource on valid token and valid subject with permission', async function() {
+    test('should get the protected resource on valid token and valid subject with permission', async function() {
 
     var token = jwt.sign({
       subject_identifier: "jane_doe"
@@ -335,7 +335,7 @@ describe('SecurityMiddleware: ensureAuthorization', function() {
 
   });
 
-  it('should get the protected resource on valid long live token and valid subject with permission', async function() {
+    test('should get the protected resource on valid long live token and valid subject with permission', async function() {
 
     var token = jwt.sign({
       subject_identifier: "jane_doe",

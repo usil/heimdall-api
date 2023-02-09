@@ -24,7 +24,7 @@ describe('MonitorRoute', function () {
       await server.close();
     });
 
-    it('findAll - should return monitor data of all services', async function () {
+    test('findAll - should return monitor data of all services', async function () {
 
         function websiteServiceMock() {
             this.getResultWeb = function () {

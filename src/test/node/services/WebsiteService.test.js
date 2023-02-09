@@ -13,7 +13,7 @@ const WebModel = require('../../../main/node/models/Webs');
 const WebsiteService = require("../../../main/node/services/WebsiteService.js");
 
 describe('WebsiteService', function () {
-  it('should create the web', async () => {
+    test('should create the web', async () => {
 
     sinon.stub(WebModel, 'create').callsFake(function () { return { "foo": "bar" } });
 
@@ -24,7 +24,7 @@ describe('WebsiteService', function () {
     WebModel.create.restore();
   });
 
-  it('should create the web if dont exist', async () => {
+    test('should create the web if dont exist', async () => {
 
     sinon.stub(WebModel, 'create').callsFake(function () { return { "foo": "bar" } });
 
@@ -40,7 +40,7 @@ describe('WebsiteService', function () {
     WebModel.find.restore();
   });  
 
-  it('should not create the web if dont exist', async () => {
+    test('should not create the web if dont exist', async () => {
 
     sinon.stub(WebModel, 'find').callsFake(function () {
       return [{}]
@@ -53,7 +53,7 @@ describe('WebsiteService', function () {
     WebModel.find.restore();
   });    
 
-  it('should return the details of one web', async () => {
+    test('should return the details of one web', async () => {
 
 
     sinon.stub(WebModel, 'find').callsFake(function () {
@@ -122,7 +122,7 @@ describe('WebsiteService', function () {
     WebModel.find.restore();
   });
 
-  it('should return of all the registered webs', async () => {
+    test('should return of all the registered webs', async () => {
 
     sinon.stub(WebModel, 'find').callsFake(function () {
       return [

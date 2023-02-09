@@ -1,5 +1,7 @@
+const include = require('nodejs-require-enhancer');
 const fs = require("fs");
 const path = require("path");
+const ApiResponseCodes = include('/src/main/node/common/ApiResponseCodes.js');
 
 @Route
 function SinginRoute(){
@@ -41,13 +43,22 @@ function SinginRoute(){
 
   @Post(path = "/v1/sing-in/default")
   this.processDefaultLogin = async(req, res) => {
-    console.log(req.body)
     var response = await this.oauth2SpecService.generateToken({
       "grant_type": "password",
       "username": req.body.username,
       "password": req.body.password
     });
-    return res.send(response);
+    //#TODO: redirectWebBaseurl validate at startup
+    
+    var redirectWebBaseurl = this.configuration.getProperty("login.default.redirectWebBaseurl");
+
+    if(typeof redirectWebBaseurl === 'undefined'){
+      return res.status(500).send(`error_code = ${ApiResponseCodes.default_login_error_missing_redirect.code}`);
+    }else if(response.code!=200000){
+      return res.redirect(`${redirectWebBaseurl}?error_code=${response.code}`);
+    }else{
+      return res.redirect(`${redirectWebBaseurl}?access_token=${response.content.access_token}`);
+    }
   }
 
 }

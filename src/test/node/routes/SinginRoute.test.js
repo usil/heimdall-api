@@ -25,7 +25,7 @@ describe('SinginRoute', function () {
         await server.close();
     });
 
-    it('return the default login url if engine is default', async function () {
+    test('return the default login url if engine is default', async function () {
 
         var configurationMock = {
             login: {
@@ -58,7 +58,7 @@ describe('SinginRoute', function () {
     });
 
 
-    it('should return the html of login page', async function () {
+    test('should return the html of login page', async function () {
 
         var singinRoute = new SinginRoute();
 
@@ -74,9 +74,22 @@ describe('SinginRoute', function () {
     });
 
 
-    it.only('should return 200 and the access_token as header after login', async function () {
+    test('should return 500 and error code on missing configurations', async function () {
+
+        var configurationMock = {
+            getProperty: function (key) {
+                try {
+                    return key.split(".").reduce((result, key) => {
+                        return result[key]
+                    }, this);
+                } catch (err) {
+                    console.log(key + " cannot be retrieved from configuration!!!")
+                }
+            }
+        }
 
         var singinRoute = new SinginRoute();
+        singinRoute.configuration = configurationMock;
 
         function oauth2SpecServiceMock() {
             this.generateToken = function () {
@@ -95,7 +108,7 @@ describe('SinginRoute', function () {
         singinRoute.oauth2SpecService = new oauth2SpecServiceMock();
 
         const app = express();
-        app.use(bodyParser.urlencoded({ extended: true }));    
+        app.use(bodyParser.urlencoded({ extended: true }));
         server = http.createServer(app);
         app.post("/v1/sing-in/default", singinRoute.processDefaultLogin)
         server.listen(0); //i dont know why is sync
@@ -104,12 +117,63 @@ describe('SinginRoute', function () {
                 "grant_type": "password",
                 "username": "foo1",
                 "password": "bar1"
-              });
-        console.log(response.text);
-        expect(response.status).to.eql(200);
-        var responseObject = JSON.parse(response.text);
-        expect(responseObject.code).to.eql(200000);
-        expect(responseObject.content.access_token).to.eql("access_token_foo");
+            });
+        expect(response.status).to.eql(500);        
+        expect(response.text.includes("error_code =")).to.eql(true);        
     });
+
+    test('should return 200 and the access_token as query param', async function () {
+
+        var configurationMock = {
+            login: {
+                "engine": "default",
+                "default": {
+                  "redirectWebBaseurl": "www.foo.com"
+                }
+            },
+            getProperty: function (key) {
+                try {
+                    return key.split(".").reduce((result, key) => {
+                        return result[key]
+                    }, this);
+                } catch (err) {
+                    console.log(key + " cannot be retrieved from configuration!!!")
+                }
+            }
+        }
+
+        var singinRoute = new SinginRoute();
+        singinRoute.configuration = configurationMock;
+
+        function oauth2SpecServiceMock() {
+            this.generateToken = function () {
+
+                return {
+                    code: 200000,
+                    message: "success",
+                    content: {
+                        access_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+                        expires_in: "3600s"
+                    }
+                };
+            }
+        }
+
+        singinRoute.oauth2SpecService = new oauth2SpecServiceMock();
+
+        const app = express();
+        app.use(bodyParser.urlencoded({ extended: true }));
+        server = http.createServer(app);
+        app.post("/v1/sing-in/default", singinRoute.processDefaultLogin)
+        server.listen(0); //i dont know why is sync
+        const response = await request(app).post('/v1/sing-in/default').set('Content-Type', 'application/x-www-form-urlencoded')
+            .send({
+                "grant_type": "password",
+                "username": "foo1",
+                "password": "bar1"
+            });
+        expect(response.status).to.eql(302);
+        expect(response.headers.location.trim()).to.eql("www.foo.com?access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9");
+    });    
 
 });

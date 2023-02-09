@@ -24,7 +24,7 @@ describe('WebsiteRoute', function () {
       await server.close();
     });    
 
-    it('findAll - should return all the websites', async function () {
+    test('findAll - should return all the websites', async function () {
 
         function websiteServiceMock() {
             this.getWebs = function () {
