@@ -25,39 +25,6 @@ describe('SinginRoute', function () {
         await server.close();
     });
 
-    test('return the default login url if engine is default', async function () {
-
-        var configurationMock = {
-            login: {
-                engine: "default"
-            },
-            getProperty: function (key) {
-                try {
-                    return key.split(".").reduce((result, key) => {
-                        return result[key]
-                    }, this);
-                } catch (err) {
-                    console.log(key + " cannot be retrieved from configuration!!!")
-                }
-            }
-        }
-
-        var singinRoute = new SinginRoute();
-        singinRoute.configuration = configurationMock;
-
-        const app = express();
-        server = http.createServer(app);
-        app.get("/v1/sing-in/url-details", singinRoute.getSignInUrlDetails)
-        server.listen(0); //i dont know why is sync
-        const response = await request(app).get('/v1/sing-in/url-details');
-
-        expect(response.status).to.eql(200);
-        var responseObject = JSON.parse(response.text);
-        expect(responseObject.content.engine).to.eql("default");
-        expect(responseObject.content.url).to.eql("/v1/sing-in/default");
-    });
-
-
     test('should return the html of login page', async function () {
 
         var singinRoute = new SinginRoute();

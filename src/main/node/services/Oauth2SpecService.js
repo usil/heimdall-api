@@ -190,6 +190,10 @@ function Oauth2SpecService() {
         return response;
     }
 
+    this.introspectToken = async(token) => {
+      return await jwt.verify(token, this.configuration.oauth2.jwtSecret);
+    }    
+
     generateJwtToken = function(payload, secret, expiresIn) {
         if (typeof expiresIn !== 'undefined') {
             return jwt.sign(payload, secret, {

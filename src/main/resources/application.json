@@ -3,7 +3,8 @@
   "login": {
     "engine": "default",
     "default": {
-      "redirectWebBaseurl": "${REDIRECT_WEB_BASE_URL}"
+      "redirectWebBaseurl": "${HEIMDALL_WEB_BASE_URL}",
+      "authorizeUrl": "/v1/sing-in/default"
     },
     "microsoft": {
       "oauth2BaseUrl": "https://login.microsoftonline.com",
