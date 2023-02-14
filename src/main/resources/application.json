@@ -1,10 +1,12 @@
 {
   "nodeboot": {},
+  "title":"Heimdall Monitor",
   "login": {
     "engine": "default",
     "default": {
       "redirectWebBaseurl": "${HEIMDALL_WEB_BASE_URL}",
-      "authorizeUrl": "/v1/sing-in/default"
+      "authorizeUrl": "/v1/sing-in/default",
+      "loginHeaderColor": "#5e72e4"
     },
     "microsoft": {
       "oauth2BaseUrl": "https://login.microsoftonline.com",

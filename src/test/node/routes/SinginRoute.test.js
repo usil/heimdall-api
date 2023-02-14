@@ -27,7 +27,20 @@ describe('SinginRoute', function () {
 
     test('should return the html of login page', async function () {
 
+        var configurationMock = {
+            getProperty: function (key) {
+                try {
+                    return key.split(".").reduce((result, key) => {
+                        return result[key]
+                    }, this);
+                } catch (err) {
+                    console.log(key + " cannot be retrieved from configuration!!!")
+                }
+            }
+        }
+
         var singinRoute = new SinginRoute();
+        singinRoute.configuration = configurationMock;
 
         const app = express();
         server = http.createServer(app);
@@ -85,8 +98,9 @@ describe('SinginRoute', function () {
                 "username": "foo1",
                 "password": "bar1"
             });
-        expect(response.status).to.eql(500);        
-        expect(response.text.includes("error_code =")).to.eql(true);        
+        expect(response.status).to.eql(500);
+        //#TODO regex to get the error code  
+        expect(response.text.includes("Error Code:")).to.eql(true);        
     });
 
     test('should return 200 and the access_token as query param', async function () {
@@ -140,7 +154,7 @@ describe('SinginRoute', function () {
                 "password": "bar1"
             });
         expect(response.status).to.eql(302);
-        expect(response.headers.location.trim()).to.eql("www.foo.com?access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9");
+        expect(response.headers.location.trim()).to.eql("www.foo.com/default/callback?access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9");
     });    
 
 });

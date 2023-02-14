@@ -21,10 +21,14 @@ function SinginRoute(){
 
     if(typeof this.loginPageHtml === 'undefined'){
       this.loginPageHtml = await fs.promises.readFile(this.loginPageHtmlLocation, 'utf8' );
+      this.loginPageHtml = this.loginPageHtml.replace(/@title@/g, this.configuration.getProperty("title") || "Heimdall Monitor");
+      this.loginPageHtml = this.loginPageHtml.replace(/@loginHeaderColor@/g,
+      this.configuration.getProperty("login.default.loginHeaderColor")|| "#009485");
+      
     };
-
+    var html = this.loginPageHtml.replace("@login_message@","");
     res.type("text/html")
-    return res.send(this.loginPageHtml);
+    return res.send(html);
   }
 
   @Post(path = "/v1/sing-in/default")
@@ -37,16 +41,32 @@ function SinginRoute(){
     //#TODO: redirectWebBaseurl validate at startup
     
     var signInEngine = this.configuration.getProperty("login.engine")
-
     var redirectWebBaseurl = this.configuration.getProperty(`login.${signInEngine}.redirectWebBaseurl`);
-
+    var errorCode;
     if(typeof redirectWebBaseurl === 'undefined'){
-      return res.status(500).send(`error_code = ${ApiResponseCodes.default_login_error_missing_redirect.code}`);
+      console.error(ApiResponseCodes.default_login_error_missing_redirect);
+      errorCode = ApiResponseCodes.default_login_error_missing_redirect.code;
     }else if(response.code!=200000){
-      return res.redirect(`${redirectWebBaseurl}?error_code=${response.code}`);
+      console.error(response);
+      errorCode =  response.code;
+    }
+
+    if(typeof this.loginPageHtml === 'undefined'){
+      this.loginPageHtml = await fs.promises.readFile(this.loginPageHtmlLocation, 'utf8' );
+      this.loginPageHtml = this.loginPageHtml.replace(/@title@/g, this.configuration.getProperty("title") || "Heimdall Monitor");
+      this.loginPageHtml = this.loginPageHtml.replace(/@loginHeaderColor@/g,
+      this.configuration.getProperty("login.default.loginHeaderColor")|| "#009485");
+      
+    };
+
+    if(typeof errorCode !== 'undefined'){
+      var html = this.loginPageHtml.replace("@login_message@",`Contact system administrator, Error Code: ${errorCode}`);
+      res.type("text/html")
+      return res.status(500).send(html);
     }else{
       return res.redirect(`${redirectWebBaseurl}/default/callback?access_token=${response.content.access_token}`);
     }
+   
   }
 
 }
