@@ -28,6 +28,7 @@ describe('SinginRoute', function () {
     test('should return the html of login page', async function () {
 
         var configurationMock = {
+            login : {engine : "default"},
             getProperty: function (key) {
                 try {
                     return key.split(".").reduce((result, key) => {
@@ -57,6 +58,7 @@ describe('SinginRoute', function () {
     test('should return 500 and error code on missing configurations', async function () {
 
         var configurationMock = {
+            login : {engine : "default"},
             getProperty: function (key) {
                 try {
                     return key.split(".").reduce((result, key) => {

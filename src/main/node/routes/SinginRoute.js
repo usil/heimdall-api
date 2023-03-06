@@ -18,6 +18,10 @@ function SinginRoute(){
 
   @Get(path = "/v1/sing-in/default")
   this.getDefaultLogin = async(req, res) => {
+    var signInEngine = this.configuration.getProperty("login.engine");
+    if(signInEngine!=="default"){
+      return res.status(404).send('Not found');
+    }
 
     if(typeof this.loginPageHtml === 'undefined'){
       this.loginPageHtml = await fs.promises.readFile(this.loginPageHtmlLocation, 'utf8' );
@@ -33,6 +37,12 @@ function SinginRoute(){
 
   @Post(path = "/v1/sing-in/default")
   this.processDefaultLogin = async(req, res) => {
+
+    var signInEngine = this.configuration.getProperty("login.engine")
+    if(signInEngine!=="default"){
+      return res.status(404).send('Not found');
+    }
+
     var response = await this.oauth2SpecService.generateToken({
       "grant_type": "password",
       "username": req.body.username,
@@ -40,7 +50,6 @@ function SinginRoute(){
     });
     //#TODO: redirectWebBaseurl validate at startup
     
-    var signInEngine = this.configuration.getProperty("login.engine")
     var redirectWebBaseurl = this.configuration.getProperty(`login.${signInEngine}.redirectWebBaseurl`);
     var errorCode;
     if(typeof redirectWebBaseurl === 'undefined'){

@@ -13,6 +13,9 @@ function Oauth2SpecRoutes() {
   @Autowire(name = "oauth2SpecService")
   this.oauth2SpecService;
 
+  @Autowire(name = "microsoftLoginService")
+  this.microsoftLoginService;
+
   @Get(path = "/v1/oauth2/authorize-url")
   this.getAuthorizeUrl = (req, res) => {
 
@@ -20,10 +23,7 @@ function Oauth2SpecRoutes() {
     var authorizeUrl;
 
     if(signInEngine === "microsoft"){
-      return res.send({
-        code: ApiResponseCodes.login_unsupported_engine.code,
-        message: ApiResponseCodes.login_unsupported_engine.message
-      });
+      authorizeUrl = this.microsoftLoginService.getAuthorizeUrl();
     }else if(signInEngine === "google"){
       return res.send({
         code: ApiResponseCodes.login_unsupported_engine.code,
@@ -74,7 +74,7 @@ function Oauth2SpecRoutes() {
   }
   //https://www.rfc-editor.org/rfc/rfc7662
   @Post(path = "/v1/oauth2/token/introspect")
-  this.tokenRoute = async (req, res) => {
+  this.introspectToken = async (req, res) => {
 
     if (!req.is('application/json') && !req.is('application/x-www-form-urlencoded')) {
       res.status(400);

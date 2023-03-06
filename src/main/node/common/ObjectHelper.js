@@ -17,4 +17,14 @@ ObjectHelper.hasProperty = function(obj, key) {
    return (typeof obj !== "undefined" && obj != null) ;
 };
 
+ObjectHelper.getProperty = (key, obj) => {
+  try {
+      return key.split(".").reduce((result, key) => {
+          return result[key]
+      }, obj);
+  } catch (err) {
+      console.log(key + " cannot be retrieved from configuration")
+  }
+}
+
 module.exports = ObjectHelper;

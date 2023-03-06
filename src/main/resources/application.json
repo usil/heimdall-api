@@ -1,8 +1,7 @@
-{
-  "nodeboot": {},
+{  
   "title":"Heimdall Monitor",
   "login": {
-    "engine": "default",
+    "engine": "microsoft",
     "default": {
       "redirectWebBaseurl": "${HEIMDALL_WEB_BASE_URL}",
       "authorizeUrl": "/v1/sing-in/default",
@@ -11,13 +10,13 @@
     "microsoft": {
       "oauth2BaseUrl": "https://login.microsoftonline.com",
       "userDetailsApiEndpoint": "https://graph.microsoft.com/v1.0/me",
-      "responseType": "code",
+      "responseType": "token",
       "responseMode": "query",
       "clientId": "${MICROSOFT_CLIENT_ID}",
       "clientSecret": "${MICROSOFT_CLIENT_SECRET}",
       "redirectUri": "${MICROSOFT_REDIRECT_URL}",
-      "tenant": "common",
-      "scopes": "offline_access user.read mail.read"
+      "tenant": "${MICROSOFT_TENANT}",
+      "scopes": ".default"
     }
   },
   "database": {
@@ -36,23 +35,23 @@
   },
   "websites": [
     {
-      "url": "https://aj-derteano.github.io",
-      "name": "porfolio",
-      "description": "Web de portafolio",
+      "url": "https://erp.usil.edu.pe",
+      "name": "erp-usil",
+      "description": "ERP USIL",
       "expected_code": 200,
       "cronExpression": "*/59 * * * * *"
     },
     {
-      "url": "test.com",
-      "name": "test",
-      "description": "Web de prueba",
+      "url": "https://usil.edu.pe",
+      "name": "web-usil",
+      "description": "Web USIL",
       "expected_code": 500,
       "cronExpression": "*/59 * * * * *"
     },
     {
-      "url": "https://gist.githubusercontent.com",
-      "name": "Test 2",
-      "description": "Web de prueba",
+      "url": "https://infosil.usil.edu.pe/login",
+      "name": "infosil-v3",
+      "description": "Infosil V3",
       "expected_code": 200,
       "cronExpression": "*/59 * * * * *"
     }
