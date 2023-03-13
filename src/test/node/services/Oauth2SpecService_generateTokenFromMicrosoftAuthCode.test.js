@@ -137,7 +137,7 @@ describe('Oauth2SpecService : generateTokenFromMicrosoftAuthCode', function() {
         var configurationMock = {
             oauth2 : {
                 jwtSecret: "changeme",
-                jwtMinutesExpiration: "5"
+                jwtExpiration: "3600s"
             },
             hasProperty: hasProperty
         };           
@@ -165,7 +165,7 @@ describe('Oauth2SpecService : generateTokenFromMicrosoftAuthCode', function() {
             }
         }
 
-        oauth2SpecService.subjectDataService = new subjectDataServiceMock();        
+        oauth2SpecService.subjectService = new subjectDataServiceMock();        
 
         var tokenResponse = await oauth2SpecService.generateTokenFromMicrosoftAuthCode("foo");
         should.exist(tokenResponse, "generateTokenFromMicrosoftAuthCode response should exist");        
@@ -174,133 +174,133 @@ describe('Oauth2SpecService : generateTokenFromMicrosoftAuthCode', function() {
         should.exist(tokenResponse.content.expires_in, "expires_in should exist"); 
     });      
 
-    // it('should return a custom error when system params are missing: jwtMinutesExpiration', async function() {
-    //     var oauth2SpecService = new Oauth2SpecService();
+    it('should return a custom error when system params are missing: jwtExpiration', async function() {
+        var oauth2SpecService = new Oauth2SpecService();
 
-    //     var configurationMock = {
-    //         oauth2 : {
-    //             jwtSecret: "changeme"
-    //         },
-    //         hasProperty: hasProperty
-    //     };           
-    //     oauth2SpecService.configuration = configurationMock;
+        var configurationMock = {
+            oauth2 : {
+                jwtSecret: "changeme"
+            },
+            hasProperty: hasProperty
+        };           
+        oauth2SpecService.configuration = configurationMock;
 
-    //     var expectedError;
-    //     try {
-    //         await oauth2SpecService.generateTokenFromSubject();
-    //     } catch (err) {
-    //         expectedError = err;
-    //     }
-    //     console.log(expectedError)
-    //     expect(expectedError.code).to.eql(ApiResponseCodes.missing_system_configuration.code);        
-    // });  
+        var expectedError;
+        try {
+            await oauth2SpecService.generateTokenFromSubject();
+        } catch (err) {
+            expectedError = err;
+        }
+        console.log(expectedError)
+        expect(expectedError.code).to.eql(ApiResponseCodes.missing_system_configuration.code);        
+    });  
     
-    // it('should return a custom error when param is missing', async function() {
-    //     var oauth2SpecService = new Oauth2SpecService();
+    it('should return a custom error when param is missing', async function() {
+        var oauth2SpecService = new Oauth2SpecService();
 
-    //     var configurationMock = {
-    //         oauth2 : {
-    //             jwtSecret: "changeme",
-    //             jwtMinutesExpiration: "5"
-    //         },
-    //         hasProperty: hasProperty
-    //     };           
-    //     oauth2SpecService.configuration = configurationMock;
+        var configurationMock = {
+            oauth2 : {
+                jwtSecret: "changeme",
+                jwtExpiration: "3600s"
+            },
+            hasProperty: hasProperty
+        };           
+        oauth2SpecService.configuration = configurationMock;
 
-    //     var expectedError;
-    //     try {
-    //         await oauth2SpecService.generateTokenFromSubject();
-    //     } catch (err) {
-    //         expectedError = err;
-    //     }
-    //     console.log(expectedError)
-    //     expect(expectedError.code).to.eql(ApiResponseCodes.bad_request_missing_field.code);        
-    // });      
-
-
-    // it('should return a custom error when user cannot be searched due to db error', async function() {
-    //     var oauth2SpecService = new Oauth2SpecService();
-
-    //     var configurationMock = {
-    //         oauth2 : {
-    //             jwtSecret: "changeme",
-    //             jwtMinutesExpiration: "5"
-    //         },
-    //         hasProperty: hasProperty
-    //     };           
-    //     oauth2SpecService.configuration = configurationMock;
-
-    //     function subjectDataServiceMock() {
-    //         this.findSubjectByIdentifier = function () {
-    //             throw new Error("Im a findSubjectByIdentifier error");
-    //         }
-    //     }
-
-    //     oauth2SpecService.subjectDataService = new subjectDataServiceMock();
-
-    //     var expectedError;
-    //     try {
-    //         await oauth2SpecService.generateTokenFromSubject("foo");
-    //     } catch (err) {
-    //         expectedError = err;
-    //     }
-    //     console.log(expectedError)
-    //     expect(expectedError.code).to.eql(ApiResponseCodes.internal_error.code);        
-    // });
+        var expectedError;
+        try {
+            await oauth2SpecService.generateTokenFromSubject();
+        } catch (err) {
+            expectedError = err;
+        }
+        console.log(expectedError)
+        expect(expectedError.code).to.eql(ApiResponseCodes.bad_request_missing_field.code);        
+    });      
 
 
-    // it('should return a custom error when user was not found', async function() {
-    //     var oauth2SpecService = new Oauth2SpecService();
+    it('should return a custom error when user cannot be searched due to db error', async function() {
+        var oauth2SpecService = new Oauth2SpecService();
 
-    //     var configurationMock = {
-    //         oauth2 : {
-    //             jwtSecret: "changeme",
-    //             jwtMinutesExpiration: "5"
-    //         },
-    //         hasProperty: hasProperty
-    //     };           
-    //     oauth2SpecService.configuration = configurationMock;
+        var configurationMock = {
+            oauth2 : {
+                jwtSecret: "changeme",
+                jwtExpiration: "3600s"
+            },
+            hasProperty: hasProperty
+        };           
+        oauth2SpecService.configuration = configurationMock;
 
-    //     function subjectDataServiceMock() {
-    //         this.findSubjectByIdentifier = function () {
-    //             return [];
-    //         }
-    //     }
+        function subjectDataServiceMock() {
+            this.findSubjectByIdentifier = function () {
+                throw new Error("Im a findSubjectByIdentifier error");
+            }
+        }
 
-    //     oauth2SpecService.subjectDataService = new subjectDataServiceMock();
+        oauth2SpecService.subjectervice = new subjectDataServiceMock();
 
-    //     var expectedError;
-    //     try {
-    //         await oauth2SpecService.generateTokenFromSubject("foo");
-    //     } catch (err) {
-    //         expectedError = err;
-    //     }
-    //     console.log(expectedError)
-    //     expect(expectedError.code).to.eql(ApiResponseCodes.user_not_found.code);        
-    // });
+        var expectedError;
+        try {
+            await oauth2SpecService.generateTokenFromSubject("foo");
+        } catch (err) {
+            expectedError = err;
+        }
+        console.log(expectedError)
+        expect(expectedError.code).to.eql(ApiResponseCodes.internal_error.code);        
+    });
 
-    // it('should return the token info if everything works', async function() {
-    //     var oauth2SpecService = new Oauth2SpecService();
 
-    //     var configurationMock = {
-    //         oauth2 : {
-    //             jwtSecret: "changeme",
-    //             jwtMinutesExpiration: "5"
-    //         },
-    //         hasProperty: hasProperty
-    //     };           
-    //     oauth2SpecService.configuration = configurationMock;
+    it('should return a custom error when user was not found', async function() {
+        var oauth2SpecService = new Oauth2SpecService();
 
-    //     function subjectDataServiceMock() {
-    //         this.findSubjectByIdentifier = function () {
-    //             return ["bar"];
-    //         }
-    //     }
+        var configurationMock = {
+            oauth2 : {
+                jwtSecret: "changeme",
+                jwtExpiration: "3600s"
+            },
+            hasProperty: hasProperty
+        };           
+        oauth2SpecService.configuration = configurationMock;
 
-    //     oauth2SpecService.subjectDataService = new subjectDataServiceMock();
+        function subjectDataServiceMock() {
+            this.findSubjectByIdentifier = function () {
+                return [];
+            }
+        }
 
-    //     var response = await oauth2SpecService.generateTokenFromSubject("foo");        
-    //     should.exist(response.access_token);
+        oauth2SpecService.subjectService = new subjectDataServiceMock();
+
+        var expectedError;
+        try {
+            await oauth2SpecService.generateTokenFromSubject("foo");
+        } catch (err) {
+            expectedError = err;
+        }
+        console.log(expectedError)
+        expect(expectedError.code).to.eql(ApiResponseCodes.user_not_found.code);        
+    });
+
+    it('should return the token info if everything works', async function() {
+        var oauth2SpecService = new Oauth2SpecService();
+
+        var configurationMock = {
+            oauth2 : {
+                jwtSecret: "changeme",
+                jwtExpiration: "3600s"
+            },
+            hasProperty: hasProperty
+        };           
+        oauth2SpecService.configuration = configurationMock;
+
+        function subjectDataServiceMock() {
+            this.findSubjectByIdentifier = function () {
+                return ["bar"];
+            }
+        }
+
+        oauth2SpecService.subjectService = new subjectDataServiceMock();
+
+        var response = await oauth2SpecService.generateTokenFromSubject("foo");        
+        should.exist(response.access_token);
          
-    // });    
+    });    
 });

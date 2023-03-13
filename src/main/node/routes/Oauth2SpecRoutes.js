@@ -72,6 +72,7 @@ function Oauth2SpecRoutes() {
       });
     }
   }
+
   //https://www.rfc-editor.org/rfc/rfc7662
   @Post(path = "/v1/oauth2/token/introspect")
   this.introspectToken = async (req, res) => {
@@ -98,13 +99,40 @@ function Oauth2SpecRoutes() {
       res.status(500);
       return res.json({
         code: 500410,
-        message: "tokes is not active",
+        message: "token is not active",
         content : {
           active: false
          }
       });
     }
-  }  
+  }
+
+  @Post(path = "/v1/oauth2/token/microsoft-auth-code")
+  this.generateTokenFromMicrosoftAuthCode = async (req, res) => {
+
+    if (!req.is('application/json')) {
+      res.status(400);
+      return res.json({
+        code: 400001,
+        message: "unsuported content type"
+      });
+    }
+
+    try {
+      var tokenResponse = await this.oauth2SpecService.generateTokenFromMicrosoftAuthCode(req.body.code);
+      res.status(200);
+      return res.json(tokenResponse);
+    } catch (e) {
+      console.log(e);
+      res.status(500);
+      return res.json({
+        code: 500000,
+        message: "internal error"
+      });
+    }
+  }
+
+
 }
 
 module.exports = Oauth2SpecRoutes;

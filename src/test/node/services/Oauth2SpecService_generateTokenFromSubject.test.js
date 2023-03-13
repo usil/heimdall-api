@@ -36,7 +36,7 @@ describe('Oauth2SpecService : generateTokenFromSubject', function() {
         expect(expectedError.code).to.eql(ApiResponseCodes.missing_system_configuration.code);        
     });
 
-    it('should return a custom error when system params are missing: jwtMinutesExpiration', async function() {
+    it('should return a custom error when system params are missing: jwtExpiration', async function() {
         var oauth2SpecService = new Oauth2SpecService();
 
         var configurationMock = {
@@ -63,7 +63,7 @@ describe('Oauth2SpecService : generateTokenFromSubject', function() {
         var configurationMock = {
             oauth2 : {
                 jwtSecret: "changeme",
-                jwtMinutesExpiration: "5"
+                jwtExpiration: "3600s"
             },
             hasProperty: hasProperty
         };           
@@ -86,7 +86,7 @@ describe('Oauth2SpecService : generateTokenFromSubject', function() {
         var configurationMock = {
             oauth2 : {
                 jwtSecret: "changeme",
-                jwtMinutesExpiration: "5"
+                jwtExpiration: "3600s"
             },
             hasProperty: hasProperty
         };           
@@ -98,7 +98,7 @@ describe('Oauth2SpecService : generateTokenFromSubject', function() {
             }
         }
 
-        oauth2SpecService.subjectDataService = new subjectDataServiceMock();
+        oauth2SpecService.subjectService = new subjectDataServiceMock();
 
         var expectedError;
         try {
@@ -117,7 +117,7 @@ describe('Oauth2SpecService : generateTokenFromSubject', function() {
         var configurationMock = {
             oauth2 : {
                 jwtSecret: "changeme",
-                jwtMinutesExpiration: "5"
+                jwtExpiration: "3600s"
             },
             hasProperty: hasProperty
         };           
@@ -129,7 +129,7 @@ describe('Oauth2SpecService : generateTokenFromSubject', function() {
             }
         }
 
-        oauth2SpecService.subjectDataService = new subjectDataServiceMock();
+        oauth2SpecService.subjectService = new subjectDataServiceMock();
 
         var expectedError;
         try {
@@ -147,7 +147,7 @@ describe('Oauth2SpecService : generateTokenFromSubject', function() {
         var configurationMock = {
             oauth2 : {
                 jwtSecret: "changeme",
-                jwtMinutesExpiration: "5"
+                jwtExpiration: "3600s"
             },
             hasProperty: hasProperty
         };           
@@ -159,7 +159,7 @@ describe('Oauth2SpecService : generateTokenFromSubject', function() {
             }
         }
 
-        oauth2SpecService.subjectDataService = new subjectDataServiceMock();
+        oauth2SpecService.subjectService = new subjectDataServiceMock();
 
         var response = await oauth2SpecService.generateTokenFromSubject("foo");        
         should.exist(response.access_token);

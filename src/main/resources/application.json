@@ -8,15 +8,15 @@
       "loginHeaderColor": "#5e72e4"
     },
     "microsoft": {
-      "oauth2BaseUrl": "https://login.microsoftonline.com",
-      "userDetailsApiEndpoint": "https://graph.microsoft.com/v1.0/me",
-      "responseType": "token",
+      "oauth2BaseUrl": "http://localhost:8085",
+      "userDetailsApiEndpoint": "http://localhost:8085/v1.0/me",
+      "responseType": "code",
       "responseMode": "query",
       "clientId": "${MICROSOFT_CLIENT_ID}",
       "clientSecret": "${MICROSOFT_CLIENT_SECRET}",
       "redirectUri": "${MICROSOFT_REDIRECT_URL}",
       "tenant": "${MICROSOFT_TENANT}",
-      "scopes": ".default"
+      "scopes": "user.read"
     }
   },
   "database": {

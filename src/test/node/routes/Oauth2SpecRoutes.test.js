@@ -5,15 +5,10 @@ NodeInternalModulesHook._compile();
 var bodyParser = require('body-parser');
 var chai = require('chai');
 var expect = chai.expect;
-var assert = chai.assert;
-var resolveOrigin = require.resolve
-var requireOrigin = require
-var sinon = require('sinon');
+var should = chai.should();
 const express = require('express');
 const request = require('supertest');
 const http = require('http');
-const fs = require('fs').promises;
-const path = require('path');
 
 const Oauth2SpecRoutes = include('/src/main/node/routes/Oauth2SpecRoutes.js');
 
@@ -61,5 +56,38 @@ describe('Oauth2SpecRoutes', function () {
         expect(responseObject.content.engine).to.eql("default");
         expect(responseObject.content.authorizeUrl).to.eql("/v1/sing-in/default");
     }); 
+
+
+    test('return the token from microsoft auth code', async function () {
+
+        function oauth2SpecServiceMock() {
+            this.generateTokenFromMicrosoftAuthCode = function () {
+                return {
+                    code: 200000,
+                    message: "success",
+                    content: {
+                        access_token: "*****",
+                        expires_in: 2600
+                    }
+                };
+            }
+        }
+
+        var oauth2SpecRoutes = new Oauth2SpecRoutes();
+        oauth2SpecRoutes.oauth2SpecService = new oauth2SpecServiceMock();
+
+        const app = express();
+        app.use(bodyParser.json());
+        app.use(bodyParser.urlencoded({ extended: true }));
+        server = http.createServer(app);
+        app.post("/v1/oauth2/token/microsoft-auth-code", oauth2SpecRoutes.generateTokenFromMicrosoftAuthCode)
+        server.listen(0); //i dont know why is sync
+        const response = await request(app).post('/v1/oauth2/token/microsoft-auth-code').set('Content-Type', 'application/json')
+            .send({
+                "code": "foo_code"
+            });
+        var responseObject = JSON.parse(response.text);
+        should.exist(responseObject.content.access_token);        
+    });     
 
 });

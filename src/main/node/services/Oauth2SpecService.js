@@ -141,8 +141,8 @@ function Oauth2SpecService() {
                 ApiResponseCodes.missing_system_configuration.code);
         }
 
-        if (this.configuration.hasProperty("oauth2.jwtMinutesExpiration")===false) {
-            console.error("oauth2.jwtMinutesExpiration is not configured");
+        if (this.configuration.hasProperty("oauth2.jwtExpiration")===false) {
+            console.error("oauth2.jwtExpiration is not configured");
             throw new CustomError(ApiResponseCodes.missing_system_configuration.reason, 
                 ApiResponseCodes.missing_system_configuration.code);
         }        
@@ -155,7 +155,7 @@ function Oauth2SpecService() {
         
         var subject;
         try {
-            subject = await this.subjectDataService.findSubjectByIdentifier(subjectIdentifier);
+            subject = await this.subjectService.findSubjectByIdentifier(subjectIdentifier);
         } catch (e) {
             console.log("database error while subject was be querying");
             console.log(e);
@@ -174,11 +174,11 @@ function Oauth2SpecService() {
             subjectIdentifier: subjectIdentifier,
             type: "acc"
         },
-        this.configuration.oauth2.jwtSecret, new Number(this.configuration.oauth2.jwtMinutesExpiration)*60*1000);
+        this.configuration.oauth2.jwtSecret, this.configuration.oauth2.jwtExpiration);
 
         let response = {
             access_token: access_token,
-            expires_in: new Number(this.configuration.oauth2.jwtMinutesExpiration)*60*1000
+            expires_in: this.configuration.oauth2.jwtExpiration
         }
         return response;
     }
@@ -187,16 +187,16 @@ function Oauth2SpecService() {
       return await jwt.verify(token, this.configuration.oauth2.jwtSecret);
     }
 
-    this.generateTokenFromMicrosoftAuthCode = async(microsoftAuthcode) => {
+    this.generateTokenFromMicrosoftAuthCode = async(microsoftAuthCode) => {
 
-        if (typeof microsoftAuthcode === 'undefined') {
-            console.error("microsoftAuthcode is required");
+        if (typeof microsoftAuthCode === 'undefined') {
+            console.error("microsoft auth code is required");
             throw new CustomError(ApiResponseCodes.bad_request_missing_field.reason, 
                 ApiResponseCodes.bad_request_missing_field.code);
         }
 
         //exchange authcode for an access_token
-        var accesstoken = await this.microsoftLoginService.getAccessToken(microsoftAuthcode);
+        var accesstoken = await this.microsoftLoginService.getAccessToken(microsoftAuthCode);
 
         var userDetails = await this.microsoftLoginService.getUserDetails(accesstoken);
 
