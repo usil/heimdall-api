@@ -160,7 +160,7 @@ describe('Oauth2SpecService : generateTokenFromMicrosoftAuthCode', function() {
         oauth2SpecService.microsoftLoginService = new microsoftLoginServiceMock();  
 
         function subjectDataServiceMock() {
-            this.findSubjectByIdentifier = function () {
+            this.findByIdentifier = function () {
                 return ["bar"];
             }
         }
@@ -231,8 +231,8 @@ describe('Oauth2SpecService : generateTokenFromMicrosoftAuthCode', function() {
         oauth2SpecService.configuration = configurationMock;
 
         function subjectDataServiceMock() {
-            this.findSubjectByIdentifier = function () {
-                throw new Error("Im a findSubjectByIdentifier error");
+            this.findByIdentifier = function () {
+                throw new Error("Im a findByIdentifier error");
             }
         }
 
@@ -262,7 +262,7 @@ describe('Oauth2SpecService : generateTokenFromMicrosoftAuthCode', function() {
         oauth2SpecService.configuration = configurationMock;
 
         function subjectDataServiceMock() {
-            this.findSubjectByIdentifier = function () {
+            this.findByIdentifier = function () {
                 return [];
             }
         }
@@ -292,7 +292,7 @@ describe('Oauth2SpecService : generateTokenFromMicrosoftAuthCode', function() {
         oauth2SpecService.configuration = configurationMock;
 
         function subjectDataServiceMock() {
-            this.findSubjectByIdentifier = function () {
+            this.findByIdentifier = function () {
                 return ["bar"];
             }
         }

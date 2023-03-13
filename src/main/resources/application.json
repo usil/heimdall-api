@@ -8,8 +8,8 @@
       "loginHeaderColor": "#5e72e4"
     },
     "microsoft": {
-      "oauth2BaseUrl": "http://localhost:8085",
-      "userDetailsApiEndpoint": "http://localhost:8085/v1.0/me",
+      "oauth2BaseUrl": "${MICROSOFT_OAUTH2_BASE_URL}",
+      "userDetailsApiEndpoint": "${MICROSOFT_USER_DETAILS_API_ENDPOINT}",
       "responseType": "code",
       "responseMode": "query",
       "clientId": "${MICROSOFT_CLIENT_ID}",
@@ -30,28 +30,28 @@
     "jwtSecret": "changeme",
     "jwtExpiration": "3600s",
     "disableRoutes": true,
-    "defaultAdminUser": "admin",
-    "defaultAdminPassword": "changeme"
+    "defaultAdminUser": "${DEFAULT_ADMIN_USER}",
+    "defaultAdminPassword": "${DEFAULT_ADMIN_PASSWORD}"
   },
   "websites": [
     {
-      "url": "https://erp.usil.edu.pe",
-      "name": "erp-usil",
-      "description": "ERP USIL",
+      "url": "https://github.com",
+      "name": "github",
+      "description": "github",
       "expected_code": 200,
       "cronExpression": "*/59 * * * * *"
     },
     {
-      "url": "https://usil.edu.pe",
-      "name": "web-usil",
-      "description": "Web USIL",
-      "expected_code": 500,
+      "url": "https://es.wikipedia.org",
+      "name": "wikipedia",
+      "description": "wikipedia",
+      "expected_code": 302,
       "cronExpression": "*/59 * * * * *"
     },
     {
-      "url": "https://infosil.usil.edu.pe/login",
-      "name": "infosil-v3",
-      "description": "Infosil V3",
+      "url": "https://www.speedtest.net",
+      "name": "speedtest",
+      "description": "speedtest",
       "expected_code": 200,
       "cronExpression": "*/59 * * * * *"
     }

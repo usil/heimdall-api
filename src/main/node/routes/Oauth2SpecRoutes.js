@@ -108,7 +108,7 @@ function Oauth2SpecRoutes() {
   }
 
   @Post(path = "/v1/oauth2/token/microsoft-auth-code")
-  this.generateTokenFromMicrosoftAuthCode = async (req, res) => {
+  this.generateTokenFromMicrosoftAuthCode = async (req, res, next) => {
 
     if (!req.is('application/json')) {
       res.status(400);
@@ -122,13 +122,8 @@ function Oauth2SpecRoutes() {
       var tokenResponse = await this.oauth2SpecService.generateTokenFromMicrosoftAuthCode(req.body.code);
       res.status(200);
       return res.json(tokenResponse);
-    } catch (e) {
-      console.log(e);
-      res.status(500);
-      return res.json({
-        code: 500000,
-        message: "internal error"
-      });
+    } catch (error) {
+      next(error)
     }
   }
 

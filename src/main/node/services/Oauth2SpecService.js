@@ -155,7 +155,7 @@ function Oauth2SpecService() {
         
         var subject;
         try {
-            subject = await this.subjectService.findSubjectByIdentifier(subjectIdentifier);
+            subject = await this.subjectService.findByIdentifier(subjectIdentifier);
         } catch (e) {
             console.log("database error while subject was be querying");
             console.log(e);

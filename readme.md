@@ -4,7 +4,6 @@
 |--|--|--|--|
 
 
-
 // Listar webs registradas
 GET http://localhost:2104/v1/website
 
