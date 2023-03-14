@@ -77,17 +77,47 @@ const mongoose = require("mongoose");
       return;
     }
     //#TODO: validate if admin has the default or expected resources and actions
-    var resource = "heimdall-api"
     await this.permissionService.create({
       role: "admin",
-      resource: resource + ":subject",
+      resource: "subject",
       action: "create"
     });
     await this.permissionService.create({
       role: "admin",
-      resource: resource + ":subject",
+      resource: "subject",
       action: "update"
     });
+
+    await this.permissionService.create({
+      role: "admin",
+      resource: "website",
+      action: "read"
+    });
+
+    await this.permissionService.create({
+      role: "admin",
+      resource: "monitor",
+      action: "read"
+    });
+
+    await this.permissionService.create({
+      role: "admin",
+      resource: "monitor-website",
+      action: "read"
+    }); 
+    
+    await this.permissionService.create({
+      role: "guest",
+      resource: "monitor",
+      action: "read"
+    });
+
+    await this.permissionService.create({
+      role: "guest",
+      resource: "monitor-website",
+      action: "read"
+    });     
+
     console.log("at least one admin role exist")    
   }
 

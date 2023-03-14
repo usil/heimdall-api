@@ -10,6 +10,7 @@ function HttpHelper(){
       })
       return httpRequest.status;
     } catch (err) {
+      console.error(err)
       const { errno, code } = err;
       return code
     }
