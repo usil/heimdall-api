@@ -8,6 +8,9 @@ services:
       - "27017:27017"
     logging:
       driver: none
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: changeme  
   heimdall_api:
     container_name: heimdall-api
     #restart: always
